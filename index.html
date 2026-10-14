@@ -1,0 +1,3132 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>星夢探險記 - 兒童涂色樂園 | Star Dream Adventure Coloring</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Comic Sans MS','Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);min-height:100vh;color:#333;overflow-x:hidden}
+.container{max-width:1200px;margin:0 auto;padding:20px}
+
+/* Header */
+header{text-align:center;padding:30px 0 20px;color:#fff}
+header h1{font-size:2.5rem;text-shadow:3px 3px 0 rgba(0,0,0,0.2);margin-bottom:8px}
+header p{font-size:1.1rem;opacity:0.9}
+.lang-toggle{position:absolute;top:20px;right:20px}
+.lang-btn{background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.4);color:#fff;padding:8px 16px;border-radius:20px;cursor:pointer;font-size:0.9rem;transition:all 0.3s}
+.lang-btn:hover{background:rgba(255,255,255,0.35)}
+
+/* Navigation */
+.nav-tabs{display:flex;justify-content:center;gap:10px;margin:20px 0;flex-wrap:wrap}
+.nav-tab{background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.4);color:#fff;padding:10px 24px;border-radius:30px;cursor:pointer;font-size:1rem;font-weight:bold;transition:all 0.3s}
+.nav-tab:hover,.nav-tab.active{background:#fff;color:#764ba2;transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,0,0,0.2)}
+
+/* Gallery */
+.gallery-section{display:none}
+.gallery-section.active{display:block}
+.category-tabs{display:flex;justify-content:center;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.cat-tab{background:rgba(255,255,255,0.9);border:none;padding:8px 18px;border-radius:20px;cursor:pointer;font-size:0.9rem;font-weight:bold;color:#666;transition:all 0.3s}
+.cat-tab:hover,.cat-tab.active{background:#ff6b9d;color:#fff;transform:scale(1.05)}
+
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:20px;padding:20px 0}
+.gallery-card{background:#fff;border-radius:20px;overflow:hidden;cursor:pointer;transition:all 0.3s;box-shadow:0 5px 15px rgba(0,0,0,0.15)}
+.gallery-card:hover{transform:translateY(-8px) rotate(-2deg);box-shadow:0 15px 30px rgba(0,0,0,0.25)}
+.gallery-card img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.gallery-card-info{padding:12px;text-align:center}
+.gallery-card-info h4{font-size:0.95rem;color:#333;margin-bottom:4px}
+.gallery-card-info span{font-size:0.8rem;color:#999}
+
+/* Coloring Page */
+.coloring-section{display:none}
+.coloring-section.active{display:block}
+.coloring-container{display:grid;grid-template-columns:280px 1fr;gap:20px;background:#fff;border-radius:25px;padding:20px;box-shadow:0 10px 40px rgba(0,0,0,0.2)}
+
+.toolbar{background:linear-gradient(180deg,#f8f9ff,#eef1ff);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.tool-group h5{font-size:0.85rem;color:#666;margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid #e0e0e0}
+.tools-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.tool-btn{aspect-ratio:1;background:#fff;border:2px solid #e0e0e0;border-radius:12px;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.tool-btn:hover{border-color:#667eea;background:#f0f3ff}
+.tool-btn.active{border-color:#667eea;background:#667eea;color:#fff;transform:scale(1.1)}
+
+.colors-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}
+.color-btn{aspect-ratio:1;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,0.2);cursor:pointer;transition:all 0.2s}
+.color-btn:hover{transform:scale(1.15)}
+.color-btn.active{border-color:#333;transform:scale(1.2)}
+
+.size-slider{width:100%}
+.size-slider input{width:100%;accent-color:#667eea}
+
+.action-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto}
+.action-btn{padding:10px;border:none;border-radius:12px;cursor:pointer;font-size:0.85rem;font-weight:bold;transition:all 0.2s}
+.action-btn.primary{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
+.action-btn.primary:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(102,126,234,0.4)}
+.action-btn.secondary{background:#f0f0f0;color:#333}
+.action-btn.secondary:hover{background:#e0e0e0}
+.action-btn.success{background:linear-gradient(135deg,#11998e,#38ef7d);color:#fff}
+.action-btn.success:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(17,153,142,0.4)}
+.action-btn.warning{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff}
+.action-btn.warning:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(245,87,108,0.4)}
+
+.canvas-wrapper{position:relative;background:#fafafa;border-radius:18px;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:500px}
+.canvas-container{position:relative;display:inline-block;line-height:0;font-size:0}
+#coloringCanvas, #lineartCanvas{position:absolute;top:0;left:0;cursor:crosshair;touch-action:none;display:block}
+#lineartCanvas{z-index:1;pointer-events:none}
+#coloringCanvas{z-index:2}
+
+.progress-bar{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.7);color:#fff;padding:6px 16px;border-radius:20px;font-size:0.85rem;z-index:10}
+
+/* 3D Viewer */
+.viewer3d-section{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#0a0a1a;z-index:1000}
+.viewer3d-section.active{display:block}
+#threeCanvas{width:100%;height:100%;display:block}
+.viewer3d-controls{position:absolute;top:20px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:10}
+.viewer3d-btn{background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);border:2px solid rgba(255,255,255,0.3);color:#fff;padding:10px 20px;border-radius:25px;cursor:pointer;font-size:0.9rem;font-weight:bold;transition:all 0.3s}
+.viewer3d-btn:hover{background:rgba(255,255,255,0.3);transform:translateY(-2px)}
+.viewer3d-close{position:absolute;top:20px;right:20px;background:rgba(255,80,80,0.8);border:none;color:#fff;width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:1.3rem;z-index:10}
+.viewer3d-title{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);color:#fff;text-align:center;z-index:10}
+.viewer3d-title h2{font-size:1.8rem;text-shadow:2px 2px 10px rgba(0,0,0,0.5);margin-bottom:5px}
+.viewer3d-title p{opacity:0.8;font-size:1rem}
+
+/* ============ AI 3D True 3D Viewer ============ */
+.ai3d-viewer{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#0a0a2e 0%,#1a1a4e 50%,#0d0d3d 100%);z-index:2000;overflow:hidden}
+.ai3d-viewer.active{display:block}
+.ai3d-close{position:absolute;top:20px;right:20px;background:rgba(255,80,80,0.85);border:none;color:#fff;width:48px;height:48px;border-radius:50%;cursor:pointer;font-size:1.4rem;z-index:10;transition:all 0.3s;box-shadow:0 4px 15px rgba(255,80,80,0.4)}
+.ai3d-close:hover{background:#ff5050;transform:scale(1.1) rotate(90deg)}
+.ai3d-header{position:absolute;top:25px;left:50%;transform:translateX(-50%);text-align:center;color:#fff;z-index:10}
+.ai3d-header h2{font-size:2rem;margin:0 0 5px 0;background:linear-gradient(90deg,#ff9ff3,#feca57,#48dbfb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:none}
+.ai3d-header p{margin:0;opacity:0.8;font-size:1rem}
+.true3d-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1}
+.true3d-canvas canvas{display:block;width:100%!important;height:100%!important}
+/* 星空背景 */
+.ai3d-stars{position:absolute;top:0;left:0;width:100%;height:100%;background-image:
+  radial-gradient(2px 2px at 20px 30px,#fff,transparent),
+  radial-gradient(2px 2px at 40px 70px,rgba(255,255,255,0.8),transparent),
+  radial-gradient(1px 1px at 90px 40px,#fff,transparent),
+  radial-gradient(2px 2px at 130px 80px,rgba(255,255,255,0.6),transparent),
+  radial-gradient(1px 1px at 160px 120px,#fff,transparent),
+  radial-gradient(2px 2px at 200px 50px,rgba(255,255,255,0.7),transparent),
+  radial-gradient(1px 1px at 250px 150px,#fff,transparent),
+  radial-gradient(2px 2px at 300px 100px,rgba(255,255,255,0.5),transparent),
+  radial-gradient(1px 1px at 350px 30px,#fff,transparent),
+  radial-gradient(2px 2px at 100px 200px,rgba(255,255,255,0.8),transparent),
+  radial-gradient(1px 1px at 50px 300px,#fff,transparent),
+  radial-gradient(2px 2px at 280px 280px,rgba(255,255,255,0.6),transparent);
+background-size:400px 400px;animation:ai3dTwinkle 3s ease-in-out infinite alternate}
+@keyframes ai3dTwinkle{0%{opacity:0.5}100%{opacity:1}}
+/* 行星 */
+.ai3d-planet{position:absolute;border-radius:50%;box-shadow:inset -10px -10px 30px rgba(0,0,0,0.3)}
+.ai3d-planet1{width:80px;height:80px;top:10%;left:5%;background:radial-gradient(circle at 30% 30%,#ffb347,#ff6b35,#c44536);animation:ai3dPlanet1 8s ease-in-out infinite}
+.ai3d-planet2{width:60px;height:60px;bottom:15%;right:8%;background:radial-gradient(circle at 30% 30%,#a29bfe,#6c5ce7,#5f27cd);animation:ai3dPlanet2 6s ease-in-out infinite}
+@keyframes ai3dPlanet1{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-20px) scale(1.05)}}
+@keyframes ai3dPlanet2{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(15px) scale(0.95)}}
+/* 流星 */
+.ai3d-meteor{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;box-shadow:0 0 6px 2px rgba(255,255,255,0.8);opacity:0}
+.ai3d-meteor::after{content:'';position:absolute;top:0;left:0;width:80px;height:1px;background:linear-gradient(90deg,#fff,transparent);transform:rotate(-45deg);transform-origin:left}
+.ai3d-meteor1{top:10%;right:20%;animation:ai3dMeteor 4s ease-in infinite}
+.ai3d-meteor2{top:30%;right:40%;animation:ai3dMeteor 6s ease-in 2s infinite}
+@keyframes ai3dMeteor{0%{transform:translateX(0) translateY(0);opacity:0}10%{opacity:1}100%{transform:translateX(-300px) translateY(300px);opacity:0}}
+/* 闪光粒子 */
+.ai3d-sparkles{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden}
+.ai3d-sparkle{position:absolute;width:6px;height:6px;background:#ffd700;border-radius:50%;box-shadow:0 0 10px 3px rgba(255,215,0,0.8);animation:ai3dSparkleFloat 3s ease-in-out infinite}
+@keyframes ai3dSparkleFloat{0%,100%{transform:translateY(0) scale(1);opacity:0.8}50%{transform:translateY(-20px) scale(1.3);opacity:1}}
+/* 控制按钮 */
+.ai3d-controls{position:absolute;bottom:80px;left:50%;transform:translateX(-50%);display:flex;gap:12px;z-index:10;flex-wrap:wrap;justify-content:center;max-width:90%}
+.ai3d-btn{background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);border:2px solid rgba(255,255,255,0.3);color:#fff;padding:12px 22px;border-radius:30px;cursor:pointer;font-size:0.95rem;font-weight:bold;transition:all 0.3s}
+.ai3d-btn:hover{background:rgba(255,255,255,0.3);transform:translateY(-3px);box-shadow:0 8px 25px rgba(255,159,243,0.3)}
+.ai3d-btn.primary{background:linear-gradient(135deg,#ff9ff3,#feca57);border-color:transparent;color:#333}
+.ai3d-btn.primary:hover{box-shadow:0 8px 25px rgba(255,159,243,0.5)}
+.ai3d-hint{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.6);font-size:0.85rem;text-align:center;z-index:10}
+/* 响应式 */
+@media(max-width:500px){
+  .ai3d-stage{width:90%;height:400px}
+  .ai3d-character-wrap{width:260px;height:340px}
+  .ai3d-header h2{font-size:1.5rem}
+  .ai3d-btn{padding:10px 16px;font-size:0.85rem}
+}
+
+/* Portfolio */
+.portfolio-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;padding:20px 0}
+.portfolio-card{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 5px 15px rgba(0,0,0,0.15)}
+.portfolio-card img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.portfolio-card-info{padding:12px}
+.portfolio-card-info h4{font-size:0.9rem;margin-bottom:4px}
+.portfolio-card-info p{font-size:0.75rem;color:#999;margin-bottom:8px}
+.portfolio-card-actions{display:flex;gap:6px}
+.portfolio-card-actions button{flex:1;padding:6px;border:none;border-radius:8px;cursor:pointer;font-size:0.75rem;font-weight:bold}
+.btn-continue{background:#667eea;color:#fff}
+.btn-delete{background:#ff6b6b;color:#fff}
+
+.empty-state{text-align:center;padding:60px 20px;color:#fff}
+.empty-state .icon{font-size:4rem;margin-bottom:20px}
+.empty-state h3{font-size:1.5rem;margin-bottom:10px}
+.empty-state p{opacity:0.8}
+
+/* Achievement */
+.achievement-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;padding:20px 0}
+.achievement-card{background:rgba(255,255,255,0.95);border-radius:18px;padding:16px;text-align:center;transition:all 0.3s}
+.achievement-card.unlocked{background:linear-gradient(135deg,#fff9c4,#fff176);box-shadow:0 5px 20px rgba(255,215,0,0.3)}
+.achievement-card.locked{opacity:0.5;filter:grayscale(100%)}
+.achievement-icon{font-size:2.5rem;margin-bottom:8px}
+.achievement-card h4{font-size:1rem;margin-bottom:4px}
+.achievement-card p{font-size:0.8rem;color:#666;margin-bottom:8px}
+.achievement-points{font-size:0.75rem;color:#ff9800;font-weight:bold}
+.achievement-progress{height:6px;background:#e0e0e0;border-radius:3px;margin-top:8px;overflow:hidden}
+.achievement-progress-bar{height:100%;background:linear-gradient(90deg,#667eea,#764ba2);border-radius:3px;transition:width 0.5s}
+
+/* Toast */
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-100px);background:#333;color:#fff;padding:12px 24px;border-radius:25px;z-index:9999;transition:transform 0.3s;box-shadow:0 5px 20px rgba(0,0,0,0.3)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.success{background:linear-gradient(135deg,#11998e,#38ef7d)}
+.toast.error{background:linear-gradient(135deg,#eb3349,#f45c43)}
+
+/* Confetti */
+.confetti{position:fixed;width:10px;height:10px;top:-10px;z-index:9998;animation:confetti-fall 3s linear forwards}
+@keyframes confetti-fall{to{transform:translateY(100vh) rotate(720deg);opacity:0}}
+
+/* Responsive */
+@media(max-width:768px){
+  .coloring-container{grid-template-columns:1fr}
+  .toolbar{order:2}
+  .tools-grid{grid-template-columns:repeat(6,1fr)}
+  .colors-grid{grid-template-columns:repeat(9,1fr)}
+  header h1{font-size:1.8rem}
+  .gallery-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+}
+</style>
+</head>
+<body>
+<div class="lang-toggle">
+  <button class="lang-btn" onclick="toggleLang()">🌐 中文 / EN</button>
+</div>
+
+<header>
+  <h1 id="siteTitle">🌟 星夢探險記 v7 🌟</h1>
+  <p id="siteSubtitle">兒童涂色樂園 | Kids Coloring Fun</p>
+</header>
+
+<div class="container">
+  <div class="nav-tabs">
+    <button class="nav-tab active" data-tab="gallery" onclick="switchTab('gallery')">🎨 涂色图库</button>
+    <button class="nav-tab" data-tab="portfolio" onclick="switchTab('portfolio')">📁 我的作品</button>
+    <button class="nav-tab" data-tab="achievements" onclick="switchTab('achievements')">🏆 成就</button>
+  </div>
+
+  <!-- Gallery -->
+  <section id="gallerySection" class="gallery-section active">
+    <div class="category-tabs" id="categoryTabs">
+      <button class="cat-tab active" data-cat="all" onclick="filterCategory('all')">🌍 全部</button>
+      <button class="cat-tab" data-cat="space" onclick="filterCategory('space')">🚀 太空冒險</button>
+      <button class="cat-tab" data-cat="fantasy" onclick="filterCategory('fantasy')">🔮 奇幻探險</button>
+      <button class="cat-tab" data-cat="nature" onclick="filterCategory('nature')">🌿 自然世界</button>
+      <button class="cat-tab" data-cat="life" onclick="filterCategory('life')">🎪 童趣生活</button>
+    </div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </section>
+
+  <!-- Coloring -->
+  <section id="coloringSection" class="coloring-section">
+    <div style="margin-bottom:15px">
+      <button class="action-btn secondary" onclick="backToGallery()">← 返回圖庫</button>
+    </div>
+    <div class="coloring-container">
+      <div class="toolbar">
+        <div class="tool-group">
+          <h5 id="toolsLabel">🖌️ 畫筆工具</h5>
+          <div class="tools-grid">
+            <button class="tool-btn active" data-tool="brush" title="畫筆" onclick="selectTool('brush')">🖌️</button>
+            <button class="tool-btn" data-tool="marker" title="麥克筆" onclick="selectTool('marker')">🖍️</button>
+            <button class="tool-btn" data-tool="crayon" title="蠟筆" onclick="selectTool('crayon')">✏️</button>
+            <button class="tool-btn" data-tool="airbrush" title="噴槍" onclick="selectTool('airbrush')">💨</button>
+            <button class="tool-btn" data-tool="watercolor" title="水彩" onclick="selectTool('watercolor')">💧</button>
+            <button class="tool-btn" data-tool="rainbow" title="彩虹筆" onclick="selectTool('rainbow')">🌈</button>
+            <button class="tool-btn" data-tool="glitter" title="閃光筆" onclick="selectTool('glitter')">✨</button>
+            <button class="tool-btn" data-tool="eraser" title="橡皮擦" onclick="selectTool('eraser')">🧽</button>
+            <button class="tool-btn" data-tool="bucket" title="油漆桶" onclick="selectTool('bucket')">🪣</button>
+            <button class="tool-btn" data-tool="pattern" title="圖案填充" onclick="selectTool('pattern')">❤️</button>
+          </div>
+        </div>
+        <div class="tool-group">
+          <h5 id="colorsLabel">🎨 顏色</h5>
+          <div class="colors-grid" id="colorPalette"></div>
+        </div>
+        <div class="tool-group">
+          <h5 id="sizeLabel">📏 筆刷大小</h5>
+          <div class="size-slider">
+            <input type="range" id="brushSize" min="2" max="50" value="10" oninput="updateBrushSize(this.value)">
+          </div>
+        </div>
+        <div class="tool-group">
+          <h5 id="boundaryLabel">🔒 邊界鎖定</h5>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.9rem">
+            <input type="checkbox" id="boundaryLock" checked onchange="toggleBoundary()">
+            <span id="boundaryText">開啟（顏色不會超出線條）</span>
+          </label>
+        </div>
+        <div class="action-btns">
+          <button class="action-btn secondary" onclick="undoColor()">↩️ 撤銷</button>
+          <button class="action-btn secondary" onclick="redoColor()">↪️ 重做</button>
+          <button class="action-btn secondary" onclick="resetCanvas()">🗑️ 重置</button>
+          <button class="action-btn primary" onclick="saveWork()">💾 保存</button>
+          <button class="action-btn success" onclick="downloadImage()">📥 下載</button>
+          <button class="action-btn warning" onclick="openAI3D()">✨ AI 3D動畫</button>
+          <button class="action-btn" onclick="generate3D()">🎬 3D場景</button>
+        </div>
+      </div>
+      <div class="canvas-wrapper">
+        <div class="progress-bar" id="progressBar">完成度: 0%</div>
+        <div class="canvas-container" id="canvasContainer">
+          <canvas id="lineartCanvas"></canvas>
+          <canvas id="coloringCanvas"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio -->
+  <section id="portfolioSection" class="gallery-section">
+    <div id="portfolioGrid" class="portfolio-grid"></div>
+    <div id="portfolioEmpty" class="empty-state" style="display:none">
+      <div class="icon">🎨</div>
+      <h3 id="emptyTitle">還沒有作品哦</h3>
+      <p id="emptyDesc">去圖庫選一張開始涂色吧！</p>
+    </div>
+  </section>
+
+  <!-- Achievements -->
+  <section id="achievementsSection" class="gallery-section">
+    <div style="text-align:center;color:#fff;margin-bottom:20px">
+      <h2 id="achvTitle">🏆 成就殿堂</h2>
+      <p id="achvSubtitle">已解鎖 <span id="unlockedCount">0</span> / <span id="totalCount">0</span> 個成就</p>
+      <p style="font-size:1.5rem;font-weight:bold">⭐ <span id="totalPoints">0</span> 點</p>
+    </div>
+    <div id="achievementGrid" class="achievement-grid"></div>
+  </section>
+</div>
+
+<!-- 3D Viewer -->
+<div id="viewer3d" class="viewer3d-section">
+  <button class="viewer3d-close" onclick="close3D()">✕</button>
+  <div class="viewer3d-controls">
+    <button class="viewer3d-btn" onclick="toggleAutoRotate()" id="autoRotateBtn">⏸️ 暫停旋轉</button>
+    <button class="viewer3d-btn" onclick="cameraClose()">🔍 角色特寫</button>
+    <button class="viewer3d-btn" onclick="cameraWide()">🌍 全景瀏覽</button>
+  </div>
+  <canvas id="threeCanvas"></canvas>
+  <div class="viewer3d-title">
+    <h2 id="viewer3dTitle">3D 作品</h2>
+    <p id="viewer3dSubtitle">拖動旋轉 · 滾輪縮放</p>
+  </div>
+</div>
+
+<!-- AI 3D Animated Viewer (True 3D with Three.js) -->
+<div id="ai3dViewer" class="ai3d-viewer">
+  <button class="ai3d-close" onclick="closeAI3D()">✕</button>
+  <div class="ai3d-header">
+    <h2>✨ AI 真3D 立體化</h2>
+    <p id="ai3dPageTitle">角色3D展示</p>
+  </div>
+  
+  <!-- True 3D Canvas -->
+  <div id="true3dCanvas" class="true3d-canvas"></div>
+  
+  <!-- 背景装饰层 (CSS) -->
+  <div class="ai3d-stars"></div>
+  <div class="ai3d-planet ai3d-planet1"></div>
+  <div class="ai3d-planet ai3d-planet2"></div>
+  <div class="ai3d-meteor ai3d-meteor1"></div>
+  <div class="ai3d-meteor ai3d-meteor2"></div>
+  
+  <div class="ai3d-controls">
+    <button class="ai3d-btn" onclick="toggleAI3DRotation()" id="ai3dRotBtn">⏸️ 暫停旋轉</button>
+    <button class="ai3d-btn" onclick="resetAI3DCamera()">🎯 正面視角</button>
+    <button class="ai3d-btn" onclick="toggleAI3DWireframe()" id="ai3dWireBtn">🔲 線框模式</button>
+    <button class="ai3d-btn primary" onclick="downloadAI3D()">📥 截圖下載</button>
+  </div>
+  
+  <div class="ai3d-hint">
+    <span>🖱️ 拖動旋轉 · 滾輪縮放 · 角色具有真實3D體積感</span>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+// ============ Data ============
+const pages = [
+  {id:1,cat:'space',titleZh:'火箭升空',titleEn:'Rocket Launch',img:'images/page_01.png'},
+  {id:2,cat:'space',titleZh:'太空幻想',titleEn:'Space Fantasy',img:'images/page_02.png'},
+  {id:3,cat:'fantasy',titleZh:'夜市集市',titleEn:'Night Market',img:'images/page_03.png'},
+  {id:4,cat:'nature',titleZh:'星球降落',titleEn:'Planet Landing',img:'images/page_04.png'},
+  {id:5,cat:'fantasy',titleZh:'星空迷宮',titleEn:'Star Maze',img:'images/page_05.png'},
+  {id:6,cat:'nature',titleZh:'機械森林',titleEn:'Mechanical Forest',img:'images/page_06.png'},
+  {id:7,cat:'nature',titleZh:'海底潛水',titleEn:'Undersea Diving',img:'images/page_07.png'},
+  {id:8,cat:'fantasy',titleZh:'時鐘奇幻',titleEn:'Clock Fantasy',img:'images/page_08.png'},
+  {id:9,cat:'life',titleZh:'城堡飛翔',titleEn:'Castle Flight',img:'images/page_09.png'},
+  {id:10,cat:'space',titleZh:'太空賽車',titleEn:'Space Racing',img:'images/page_10.png'},
+  {id:11,cat:'nature',titleZh:'花園精靈',titleEn:'Garden Fairy',img:'images/page_11.png'},
+  {id:12,cat:'fantasy',titleZh:'溶洞探險',titleEn:'Cave Adventure',img:'images/page_12.png'},
+  {id:13,cat:'fantasy',titleZh:'星空橋',titleEn:'Star Bridge',img:'images/page_13.png'},
+  {id:14,cat:'life',titleZh:'閱讀時光',titleEn:'Reading Time',img:'images/page_14.png'},
+  {id:15,cat:'life',titleZh:'魔法召喚',titleEn:'Magic Summon',img:'images/page_15.png'},
+  {id:16,cat:'life',titleZh:'音樂演奏',titleEn:'Music Performance',img:'images/page_16.png'},
+  {id:17,cat:'space',titleZh:'流星雨之夜',titleEn:'Meteor Shower Night',img:'images/page_17.png'},
+  {id:18,cat:'fantasy',titleZh:'神秘占卜',titleEn:'Mystic Divination',img:'images/page_18.png'},
+  {id:19,cat:'life',titleZh:'節日慶典',titleEn:'Festival Celebration',img:'images/page_19.png'},
+  {id:20,cat:'space',titleZh:'火箭環遊',titleEn:'Rocket World Tour',img:'images/page_20.png'},
+];
+
+const colors = [
+  '#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#9B59B6','#FF9FF3',
+  '#FF8C42','#FDCB6E','#00CEC9','#54A0FF','#A29BFE','#FD79A8',
+  '#E17055','#F9CA24','#00B894','#0984E3','#6C5CE7','#E84393',
+  '#2D3436','#636E72','#B2BEC3','#DFE6E9','#FFFFFF','#8B4513'
+];
+
+const achievements = [
+  {id:'first_color',icon:'🌟',nameZh:'初次涂色',nameEn:'First Coloring',descZh:'完成第一幅作品',descEn:'Complete your first artwork',points:10,check:s=>s.completed>=1},
+  {id:'little_painter',icon:'🎨',nameZh:'小畫家',nameEn:'Little Painter',descZh:'完成5幅作品',descEn:'Complete 5 artworks',points:20,check:s=>s.completed>=5,target:5},
+  {id:'great_painter',icon:'🏆',nameZh:'大畫家',nameEn:'Great Painter',descZh:'完成10幅作品',descEn:'Complete 10 artworks',points:50,check:s=>s.completed>=10,target:10},
+  {id:'master',icon:'👑',nameZh:'藝術大師',nameEn:'Art Master',descZh:'完成全部20幅',descEn:'Complete all 20 pages',points:100,check:s=>s.completed>=20,target:20},
+  {id:'first_3d',icon:'🚀',nameZh:'3D初體驗',nameEn:'First 3D',descZh:'第一次生成3D場景',descEn:'Generate first 3D scene',points:10,check:s=>s.gen3d>=1},
+  {id:'explorer_3d',icon:'🌌',nameZh:'3D探險家',nameEn:'3D Explorer',descZh:'生成5次3D場景',descEn:'Generate 5 3D scenes',points:30,check:s=>s.gen3d>=5,target:5},
+  {id:'rainbow',icon:'🌈',nameZh:'彩虹畫家',nameEn:'Rainbow Painter',descZh:'用過所有畫筆工具',descEn:'Use all brush tools',points:30,check:s=>s.toolsUsed>=10,target:10},
+  {id:'collector',icon:'📁',nameZh:'收藏家',nameEn:'Collector',descZh:'保存10幅作品',descEn:'Save 10 artworks',points:20,check:s=>s.saved>=10,target:10},
+  {id:'night_owl',icon:'🦉',nameZh:'夜貓子',nameEn:'Night Owl',descZh:'22:00-06:00涂色',descEn:'Color between 22:00-06:00',points:20,check:s=>s.nightOwl},
+  {id:'early_bird',icon:'🌅',nameZh:'早起鳥',nameEn:'Early Bird',descZh:'06:00-08:00涂色',descEn:'Color between 06:00-08:00',points:20,check:s=>s.earlyBird},
+];
+
+// ============ State ============
+let currentLang = 'zh';
+let currentPage = null;
+let currentTool = 'brush';
+let currentColor = '#FF6B6B';
+let brushSize = 10;
+let boundaryLock = true;
+let isDrawing = false;
+let undoStack = [];
+let redoStack = [];
+let lineartData = null;
+let stats = {completed:0,gen3d:0,saved:0,toolsUsed:0,nightOwl:false,earlyBird:false,toolSet:new Set()};
+let unlockedAchievements = new Set();
+let threeScene = null;
+let threeRenderer = null;
+let threeCamera = null;
+let autoRotate = true;
+let animationId = null;
+
+// ============ Init ============
+function init(){
+  loadStats();
+  renderGallery('all');
+  renderPalette();
+  renderAchievements();
+  renderPortfolio();
+}
+
+// ============ Language ============
+function toggleLang(){
+  currentLang = currentLang==='zh'?'en':'zh';
+  document.getElementById('siteTitle').textContent = currentLang==='zh'?'🌟 星夢探險記 v7 🌟':'🌟 Star Dream Adventure v7 🌟';
+  document.getElementById('siteSubtitle').textContent = currentLang==='zh'?'兒童涂色樂園 | Kids Coloring Fun':'Kids Coloring Fun | 兒童涂色樂園';
+  document.querySelectorAll('.nav-tab')[0].textContent = currentLang==='zh'?'🎨 涂色圖庫':'🎨 Gallery';
+  document.querySelectorAll('.nav-tab')[1].textContent = currentLang==='zh'?'📁 我的作品':'📁 My Works';
+  document.querySelectorAll('.nav-tab')[2].textContent = currentLang==='zh'?'🏆 成就':'🏆 Achievements';
+  document.getElementById('toolsLabel').textContent = currentLang==='zh'?'🖌️ 畫筆工具':'🖌️ Tools';
+  document.getElementById('colorsLabel').textContent = currentLang==='zh'?'🎨 顏色':'🎨 Colors';
+  document.getElementById('sizeLabel').textContent = currentLang==='zh'?'📏 筆刷大小':'📏 Brush Size';
+  document.getElementById('boundaryLabel').textContent = currentLang==='zh'?'🔒 邊界鎖定':'🔒 Boundary Lock';
+  document.getElementById('boundaryText').textContent = currentLang==='zh'?'開啟（顏色不會超出線條）':'On (color stays within lines)';
+  document.getElementById('achvTitle').textContent = currentLang==='zh'?'🏆 成就殿堂':'🏆 Achievements';
+  document.getElementById('achvSubtitle').textContent = currentLang==='zh'?'已解鎖':'Unlocked ';
+  document.getElementById('emptyTitle').textContent = currentLang==='zh'?'還沒有作品哦':'No artworks yet';
+  document.getElementById('emptyDesc').textContent = currentLang==='zh'?'去圖庫選一張開始涂色吧！':'Pick a page from the gallery and start coloring!';
+  document.getElementById('viewer3dTitle').textContent = currentLang==='zh'?'3D 作品':'3D Artwork';
+  document.getElementById('viewer3dSubtitle').textContent = currentLang==='zh'?'拖動旋轉 · 滾輪縮放':'Drag to rotate · Scroll to zoom';
+  renderGallery(currentCategory);
+  renderAchievements();
+  renderPortfolio();
+}
+
+// ============ Tabs ============
+function switchTab(tab){
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  const tabBtn = document.querySelector(`.nav-tab[data-tab="${tab}"]`);
+  if(tabBtn) tabBtn.classList.add('active');
+  document.querySelectorAll('.gallery-section, .coloring-section, .portfolio-section, .achievements-section').forEach(s=>s.classList.remove('active'));
+  const section = document.getElementById(tab+'Section');
+  if(section) section.classList.add('active');
+  if(tab==='portfolio') renderPortfolio();
+  if(tab==='achievements') renderAchievements();
+}
+
+// ============ Gallery ============
+let currentCategory = 'all';
+function filterCategory(cat){
+  currentCategory = cat;
+  document.querySelectorAll('.cat-tab').forEach(t=>t.classList.toggle('active',t.dataset.cat===cat));
+  renderGallery(cat);
+}
+
+function renderGallery(cat){
+  const grid = document.getElementById('galleryGrid');
+  const filtered = cat==='all'?pages:pages.filter(p=>p.cat===cat);
+  grid.innerHTML = filtered.map(p=>`
+    <div class="gallery-card" onclick="openColoring(${p.id})">
+      <img src="${p.img}" alt="${currentLang==='zh'?p.titleZh:p.titleEn}" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#667eea,#764ba2)';this.style.minHeight='200px';">
+      <div class="gallery-card-info">
+        <h4>${currentLang==='zh'?p.titleZh:p.titleEn}</h4>
+        <span>${getCategoryName(p.cat)}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function getCategoryName(cat){
+  const names = {space:currentLang==='zh'?'太空冒險':'Space',fantasy:currentLang==='zh'?'奇幻探險':'Fantasy',nature:currentLang==='zh'?'自然世界':'Nature',life:currentLang==='zh'?'童趣生活':'Life'};
+  return names[cat]||'';
+}
+
+// ============ Palette ============
+function renderPalette(){
+  const pal = document.getElementById('colorPalette');
+  pal.innerHTML = colors.map((c,i)=>`
+    <button class="color-btn ${i===0?'active':''}" style="background:${c}" data-color="${c}" onclick="selectColor('${c}',this)"></button>
+  `).join('');
+}
+
+function selectColor(color,btn){
+  currentColor = color;
+  document.querySelectorAll('.color-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ============ Tools ============
+function selectTool(tool){
+  currentTool = tool;
+  document.querySelectorAll('.tool-btn').forEach(b=>b.classList.toggle('active',b.dataset.tool===tool));
+  stats.toolSet.add(tool);
+  stats.toolsUsed = stats.toolSet.size;
+  saveStats();
+  checkAchievements();
+}
+
+function updateBrushSize(val){
+  brushSize = parseInt(val);
+}
+
+// Get brush size in canvas pixel coordinates (scales with canvas resolution)
+function getScaledBrushSize(){
+  const canvas = document.getElementById('coloringCanvas');
+  const rect = canvas.getBoundingClientRect();
+  if(rect.width > 0){
+    const scale = canvas.width / rect.width;
+    return brushSize * scale;
+  }
+  return brushSize;
+}
+
+function toggleBoundary(){
+  boundaryLock = document.getElementById('boundaryLock').checked;
+}
+
+// ============ Coloring ============
+function openColoring(id){
+  currentPage = pages.find(p=>p.id===id);
+  if(!currentPage) return;
+  
+  // Hide all sections and show coloring section directly
+  document.querySelectorAll('.gallery-section, .coloring-section, .portfolio-section, .achievements-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('coloringSection').classList.add('active');
+  // Clear nav tab active state since we're in coloring view
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  
+  const lineartCanvas = document.getElementById('lineartCanvas');
+  const coloringCanvas = document.getElementById('coloringCanvas');
+  const container = document.getElementById('canvasContainer');
+  const lineCtx = lineartCanvas.getContext('2d');
+  
+  function setupCanvas(){
+    const img = new Image();
+    img.onload = function(){
+      const naturalW = img.naturalWidth;
+      const naturalH = img.naturalHeight;
+      
+      if(!naturalW || !naturalH){
+        showToast(currentLang==='zh'?'圖片加載失敗':'Image load failed','error');
+        return;
+      }
+      
+      // Calculate display size to fit within wrapper (max-width:100%, max-height:75vh)
+      const wrapper = document.querySelector('.canvas-wrapper');
+      const maxW = wrapper.clientWidth - 40; // account for padding
+      const maxH = window.innerHeight * 0.75;
+      
+      let displayW = naturalW;
+      let displayH = naturalH;
+      const ratio = naturalW / naturalH;
+      
+      if(displayW > maxW){
+        displayW = maxW;
+        displayH = displayW / ratio;
+      }
+      if(displayH > maxH){
+        displayH = maxH;
+        displayW = displayH * ratio;
+      }
+      
+      displayW = Math.round(displayW);
+      displayH = Math.round(displayH);
+      
+      // Set container size - both canvases will fill this container
+      container.style.width = displayW + 'px';
+      container.style.height = displayH + 'px';
+      
+      // Set internal pixel resolution for BOTH canvases (identical = perfect alignment)
+      lineartCanvas.width = naturalW;
+      lineartCanvas.height = naturalH;
+      coloringCanvas.width = naturalW;
+      coloringCanvas.height = naturalH;
+      
+      // Set CSS display size for BOTH canvases (identical = perfect alignment)
+      lineartCanvas.style.width = '100%';
+      lineartCanvas.style.height = '100%';
+      coloringCanvas.style.width = '100%';
+      coloringCanvas.style.height = '100%';
+      
+      // Draw lineart onto lineartCanvas at 1:1 pixel resolution
+      lineCtx.clearRect(0, 0, naturalW, naturalH);
+      lineCtx.drawImage(img, 0, 0, naturalW, naturalH);
+      
+      // Extract lineart data directly from lineartCanvas (1:1 pixel match with coloring canvas)
+      try{
+        lineartData = lineCtx.getImageData(0, 0, naturalW, naturalH);
+        if(!lineartData || !lineartData.data || lineartData.data.length === 0){
+          lineartData = null;
+        }
+      }catch(e){
+        lineartData = null;
+      }
+      
+      if(!lineartData && boundaryLock){
+        showToast(currentLang==='zh'?'⚠️ 邊界偵測無法使用（本地打開限制）':'⚠️ Boundary detection unavailable (local file limit)','info');
+      }
+      
+      // Clear coloring canvas
+      const ctx = getCanvasCtx();
+      ctx.clearRect(0, 0, naturalW, naturalH);
+      
+      undoStack = [];
+      redoStack = [];
+      saveState();
+      updateProgress();
+      
+      const hour = new Date().getHours();
+      if(hour>=22||hour<6){stats.nightOwl=true;saveStats();checkAchievements();}
+      if(hour>=6&&hour<8){stats.earlyBird=true;saveStats();checkAchievements();}
+    };
+    img.onerror = function(){
+      coloringCanvas.width = 800;
+      coloringCanvas.height = 1100;
+      lineartCanvas.width = 800;
+      lineartCanvas.height = 1100;
+      container.style.width = '800px';
+      container.style.height = '1100px';
+      lineartData = null;
+      saveState();
+      showToast(currentLang==='zh'?'圖片加載失敗':'Image load failed','error');
+    };
+    img.src = currentPage.img;
+  }
+  
+  // Wait a tick for layout to settle, then set up
+  requestAnimationFrame(function(){ setTimeout(setupCanvas, 50); });
+}
+
+function backToGallery(){
+  switchTab('gallery');
+}
+
+function getCanvasCtx(){
+  return document.getElementById('coloringCanvas').getContext('2d');
+}
+
+function saveState(){
+  const canvas = document.getElementById('coloringCanvas');
+  const ctx = getCanvasCtx();
+  try{
+    undoStack.push(ctx.getImageData(0,0,canvas.width,canvas.height));
+    if(undoStack.length>30) undoStack.shift();
+  }catch(e){}
+  redoStack = [];
+}
+
+function undoColor(){
+  if(undoStack.length<=1) return;
+  const canvas = document.getElementById('coloringCanvas');
+  const ctx = getCanvasCtx();
+  redoStack.push(undoStack.pop());
+  ctx.putImageData(undoStack[undoStack.length-1],0,0);
+  updateProgress();
+}
+
+function redoColor(){
+  if(redoStack.length===0) return;
+  const canvas = document.getElementById('coloringCanvas');
+  const ctx = getCanvasCtx();
+  const data = redoStack.pop();
+  undoStack.push(data);
+  ctx.putImageData(data,0,0);
+  updateProgress();
+}
+
+function resetCanvas(){
+  if(!confirm(currentLang==='zh'?'確定要重置嗎？所有顏色都會清除。':'Reset? All colors will be cleared.')) return;
+  const canvas = document.getElementById('coloringCanvas');
+  const ctx = getCanvasCtx();
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  undoStack = [ctx.getImageData(0,0,canvas.width,canvas.height)];
+  redoStack = [];
+  updateProgress();
+}
+
+// Drawing
+function getPos(e){
+  const canvas = document.getElementById('coloringCanvas');
+  const rect = canvas.getBoundingClientRect();
+  const clientX = e.touches?e.touches[0].clientX:e.clientX;
+  const clientY = e.touches?e.touches[0].clientY:e.clientY;
+  // Scale from display CSS pixels to canvas internal pixel resolution
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  return {
+    x: (clientX - rect.left) * scaleX,
+    y: (clientY - rect.top) * scaleY
+  };
+}
+
+function isNearLine(x,y){
+  if(!lineartData||!boundaryLock) return false;
+  const r = Math.max(2,Math.floor(getScaledBrushSize()*0.3));
+  const w = lineartData.width, h = lineartData.height;
+  const ix = Math.floor(x);
+  const iy = Math.floor(y);
+  for(let dy=-r;dy<=r;dy++){
+    for(let dx=-r;dx<=r;dx++){
+      const px = ix+dx, py = iy+dy;
+      if(px<0||py<0||px>=w||py>=h) continue;
+      const idx = (py*w+px)*4;
+      const brightness = (lineartData.data[idx]+lineartData.data[idx+1]+lineartData.data[idx+2])/3;
+      if(brightness<120) return true;
+    }
+  }
+  return false;
+}
+
+let lastX=0, lastY=0, rainbowHue=0;
+
+function startDraw(e){
+  e.preventDefault();
+  try{
+  isDrawing = true;
+  const pos = getPos(e);
+  lastX = pos.x; lastY = pos.y;
+  saveState();
+  
+  if(currentTool==='bucket'){
+    floodFill(Math.floor(pos.x),Math.floor(pos.y));
+    updateProgress();
+    isDrawing = false;
+    return;
+  }
+  if(currentTool==='pattern'){
+    patternFill(Math.floor(pos.x),Math.floor(pos.y));
+    updateProgress();
+    isDrawing = false;
+    return;
+  }
+  draw(e);
+  }catch(err){
+    console.error('Start draw error:', err);
+    isDrawing = false;
+  }
+}
+
+function draw(e){
+  if(!isDrawing) return;
+  e.preventDefault();
+  try{
+  const pos = getPos(e);
+  const ctx = getCanvasCtx();
+  const canvas = document.getElementById('coloringCanvas');
+  
+  if(currentTool==='eraser'){
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.lineWidth = getScaledBrushSize();
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    ctx.moveTo(lastX,lastY);
+    ctx.lineTo(pos.x,pos.y);
+    ctx.stroke();
+    ctx.globalCompositeOperation = 'source-over';
+  } else if(currentTool==='rainbow'){
+    rainbowHue = (rainbowHue+3)%360;
+    ctx.strokeStyle = `hsl(${rainbowHue},80%,60%)`;
+    ctx.lineWidth = getScaledBrushSize();
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    if(!isNearLine(pos.x,pos.y)||!boundaryLock){
+      ctx.beginPath();
+      ctx.moveTo(lastX,lastY);
+      ctx.lineTo(pos.x,pos.y);
+      ctx.stroke();
+    }
+  } else if(currentTool==='airbrush'){
+    ctx.fillStyle = currentColor;
+    ctx.globalAlpha = 0.15;
+    const r = getScaledBrushSize()*2;
+    for(let i=0;i<15;i++){
+      const angle = Math.random()*Math.PI*2;
+      const dist = Math.random()*r;
+      const px = pos.x+Math.cos(angle)*dist;
+      const py = pos.y+Math.sin(angle)*dist;
+      if(!isNearLine(px,py)||!boundaryLock){
+        ctx.beginPath();
+        ctx.arc(px,py,2,0,Math.PI*2);
+        ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+  } else if(currentTool==='crayon'){
+    ctx.fillStyle = currentColor;
+    ctx.globalAlpha = 0.7;
+    for(let i=0;i<8;i++){
+      const px = pos.x+(Math.random()-0.5)*getScaledBrushSize();
+      const py = pos.y+(Math.random()-0.5)*getScaledBrushSize();
+      if(!isNearLine(px,py)||!boundaryLock){
+        ctx.beginPath();
+        ctx.arc(px,py,getScaledBrushSize()*0.3,0,Math.PI*2);
+        ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+  } else if(currentTool==='watercolor'){
+    ctx.fillStyle = currentColor;
+    ctx.globalAlpha = 0.2;
+    const r = getScaledBrushSize()*1.5;
+    ctx.beginPath();
+    ctx.arc(pos.x,pos.y,r,0,Math.PI*2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  } else if(currentTool==='marker'){
+    ctx.globalAlpha = 0.7;
+    ctx.strokeStyle = currentColor;
+    ctx.lineWidth = getScaledBrushSize()*1.3;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    if(!isNearLine(pos.x,pos.y)||!boundaryLock){
+      ctx.beginPath();
+      ctx.moveTo(lastX,lastY);
+      ctx.lineTo(pos.x,pos.y);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+  } else if(currentTool==='glitter'){
+    ctx.fillStyle = currentColor;
+    for(let i=0;i<10;i++){
+      const angle = Math.random()*Math.PI*2;
+      const dist = Math.random()*getScaledBrushSize();
+      const px = pos.x+Math.cos(angle)*dist;
+      const py = pos.y+Math.sin(angle)*dist;
+      if(!isNearLine(px,py)||!boundaryLock){
+        ctx.beginPath();
+        ctx.arc(px,py,1.5,0,Math.PI*2);
+        ctx.fill();
+      }
+    }
+    // white highlights
+    ctx.fillStyle = '#fff';
+    for(let i=0;i<3;i++){
+      const angle = Math.random()*Math.PI*2;
+      const dist = Math.random()*getScaledBrushSize()*0.7;
+      const px = pos.x+Math.cos(angle)*dist;
+      const py = pos.y+Math.sin(angle)*dist;
+      if(!isNearLine(px,py)||!boundaryLock){
+        ctx.beginPath();
+        ctx.arc(px,py,1,0,Math.PI*2);
+        ctx.fill();
+      }
+    }
+  } else {
+    // brush
+    ctx.strokeStyle = currentColor;
+    ctx.lineWidth = getScaledBrushSize();
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    if(!isNearLine(pos.x,pos.y)||!boundaryLock){
+      ctx.beginPath();
+      ctx.moveTo(lastX,lastY);
+      ctx.lineTo(pos.x,pos.y);
+      ctx.stroke();
+    }
+  }
+  
+  lastX = pos.x; lastY = pos.y;
+  updateProgress();
+  }catch(err){
+    console.error('Drawing error:', err);
+  }
+}
+
+function endDraw(){
+  isDrawing = false;
+}
+
+// Flood fill
+function floodFill(startX,startY){
+  const canvas = document.getElementById('coloringCanvas');
+  const ctx = getCanvasCtx();
+  let imgData;
+  try{
+    imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+  }catch(e){
+    showToast(currentLang==='zh'?'油漆桶無法使用（本地打開限制）':'Paint bucket unavailable (local file limit)','error');
+    return;
+  }
+  const data = imgData.data;
+  const w = canvas.width, h = canvas.height;
+  
+  const startIdx = (startY*w+startX)*4;
+  const startR = data[startIdx], startG = data[startIdx+1], startB = data[startIdx+2], startA = data[startIdx+3];
+  
+  // Parse fill color
+  const fillColor = hexToRgb(currentColor);
+  if(startR===fillColor.r&&startG===fillColor.g&&startB===fillColor.b) return;
+  
+  // Check if starting on a line (1:1 ratio now)
+  if(lineartData){
+    const lx = Math.floor(startX);
+    const ly = Math.floor(startY);
+    if(lx>=0&&ly>=0&&lx<w&&ly<h){
+      const lidx = (ly*w+lx)*4;
+      const lb = (lineartData.data[lidx]+lineartData.data[lidx+1]+lineartData.data[lidx+2])/3;
+      if(lb<120) return; // on the line
+    }
+  }
+  
+  const stack = [[startX,startY]];
+  const visited = new Uint8Array(w*h);
+  
+  while(stack.length>0){
+    const [x,y] = stack.pop();
+    if(x<0||y<0||x>=w||y>=h) continue;
+    const idx = (y*w+x)*4;
+    if(visited[y*w+x]) continue;
+    
+    // Check boundary: line (1:1 ratio)
+    if(lineartData){
+      const lb = (lineartData.data[idx]+lineartData.data[idx+1]+lineartData.data[idx+2])/3;
+      if(lb<100) continue;
+    }
+    
+    // Check if same color as start
+    if(Math.abs(data[idx]-startR)>10||Math.abs(data[idx+1]-startG)>10||Math.abs(data[idx+2]-startB)>10||Math.abs(data[idx+3]-startA)>10) continue;
+    
+    visited[y*w+x] = 1;
+    data[idx] = fillColor.r;
+    data[idx+1] = fillColor.g;
+    data[idx+2] = fillColor.b;
+    data[idx+3] = 255;
+    
+    stack.push([x+1,y],[x-1,y],[x,y+1],[x,y-1]);
+  }
+  
+  ctx.putImageData(imgData,0,0);
+}
+
+function patternFill(x,y){
+  // Simple dot pattern fill using flood fill then overlay pattern
+  const canvas = document.getElementById('coloringCanvas');
+  const ctx = getCanvasCtx();
+  
+  // First do a regular flood fill
+  floodFill(x,y);
+  
+  // Then overlay pattern
+  const imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+  const data = imgData.data;
+  const w = canvas.width, h = canvas.height;
+  const fillColor = hexToRgb(currentColor);
+  
+  // This is simplified - just add white dots
+  for(let py=0;py<h;py+=8){
+    for(let px=0;px<w;px+=8){
+      const idx = (py*w+px)*4;
+      if(data[idx+3]>0){
+        // Add a lighter dot
+        const dotX = px+3, dotY = py+3;
+        if(dotX<w&&dotY<h){
+          const didx = (dotY*w+dotX)*4;
+          data[didx] = Math.min(255,fillColor.r+60);
+          data[didx+1] = Math.min(255,fillColor.g+60);
+          data[didx+2] = Math.min(255,fillColor.b+60);
+        }
+      }
+    }
+  }
+  ctx.putImageData(imgData,0,0);
+}
+
+function hexToRgb(hex){
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result?{r:parseInt(result[1],16),g:parseInt(result[2],16),b:parseInt(result[3],16)}:{r:0,g:0,b:0};
+}
+
+// Progress
+function updateProgress(){
+  const canvas = document.getElementById('coloringCanvas');
+  const ctx = getCanvasCtx();
+  try{
+    const imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+    const data = imgData.data;
+    let colored = 0;
+    const step = 50; // sample every N pixels for speed
+    for(let i=3;i<data.length;i+=4*step){
+      if(data[i]>10) colored++;
+    }
+    const total = data.length/4/step;
+    const pct = Math.min(100,Math.round(colored/total*100));
+    document.getElementById('progressBar').textContent = (currentLang==='zh'?'完成度: ':'Progress: ')+pct+'%';
+  }catch(e){}
+}
+
+// ============ Save / Download ============
+function saveWork(){
+  if(!currentPage) return;
+  const coloringCanvas = document.getElementById('coloringCanvas');
+  const lineartCanvas = document.getElementById('lineartCanvas');
+  
+  // Merge lineart + coloring
+  const mergeCanvas = document.createElement('canvas');
+  mergeCanvas.width = coloringCanvas.width;
+  mergeCanvas.height = coloringCanvas.height;
+  const mctx = mergeCanvas.getContext('2d');
+  mctx.fillStyle = '#fff';
+  mctx.fillRect(0,0,mergeCanvas.width,mergeCanvas.height);
+  mctx.drawImage(coloringCanvas,0,0);
+  mctx.drawImage(lineartCanvas,0,0);
+  
+  const thumbnail = mergeCanvas.toDataURL('image/jpeg',0.7);
+  const fullData = coloringCanvas.toDataURL();
+  
+  const works = getWorks();
+  const work = {
+    id: Date.now(),
+    pageId: currentPage.id,
+    title: currentLang==='zh'?currentPage.titleZh:currentPage.titleEn,
+    thumbnail,
+    fullData,
+    date: new Date().toISOString(),
+    toolsUsed: stats.toolsUsed
+  };
+  works.unshift(work);
+  if(works.length>50) works.pop();
+  try{
+    localStorage.setItem('sd_works',JSON.stringify(works));
+  }catch(e){}
+  
+  stats.saved = works.length;
+  stats.completed = Math.max(stats.completed, works.filter(w=>w.pageId===currentPage.id).length>0?stats.completed:stats.completed+1);
+  saveStats();
+  checkAchievements();
+  
+  showToast(currentLang==='zh'?'💾 作品已保存！':'💾 Saved!','success');
+  renderPortfolio();
+}
+
+function getWorks(){
+  try{
+    return JSON.parse(localStorage.getItem('sd_works')||'[]');
+  }catch(e){ return []; }
+}
+
+function downloadImage(){
+  if(!currentPage) return;
+  const coloringCanvas = document.getElementById('coloringCanvas');
+  const lineartCanvas = document.getElementById('lineartCanvas');
+  
+  const mergeCanvas = document.createElement('canvas');
+  mergeCanvas.width = coloringCanvas.width;
+  mergeCanvas.height = coloringCanvas.height;
+  const mctx = mergeCanvas.getContext('2d');
+  mctx.fillStyle = '#fff';
+  mctx.fillRect(0,0,mergeCanvas.width,mergeCanvas.height);
+  mctx.drawImage(coloringCanvas,0,0);
+  mctx.drawImage(lineartCanvas,0,0);
+  
+  const link = document.createElement('a');
+  link.download = `coloring_${currentPage.id}.png`;
+  link.href = mergeCanvas.toDataURL('image/png');
+  link.click();
+}
+
+// ============ Portfolio ============
+function renderPortfolio(){
+  const works = getWorks();
+  const grid = document.getElementById('portfolioGrid');
+  const empty = document.getElementById('portfolioEmpty');
+  
+  if(works.length===0){
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  
+  grid.innerHTML = works.map(w=>`
+    <div class="portfolio-card">
+      <img src="${w.thumbnail}" alt="${w.title}">
+      <div class="portfolio-card-info">
+        <h4>${w.title}</h4>
+        <p>${new Date(w.date).toLocaleDateString()}</p>
+        <div class="portfolio-card-actions">
+          <button class="btn-continue" onclick="continueWork(${w.id})">${currentLang==='zh'?'繼續涂色':'Continue'}</button>
+          <button class="btn-delete" onclick="deleteWork(${w.id})">${currentLang==='zh'?'刪除':'Delete'}</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function continueWork(id){
+  const works = getWorks();
+  const work = works.find(w=>w.id===id);
+  if(!work) return;
+  
+  const page = pages.find(p=>p.id===work.pageId);
+  if(!page) return;
+  
+  currentPage = page;
+  
+  // Hide all sections and show coloring section directly
+  document.querySelectorAll('.gallery-section, .coloring-section, .portfolio-section, .achievements-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('coloringSection').classList.add('active');
+  // Clear nav tab active state since we're in coloring view
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  
+  const lineartCanvas = document.getElementById('lineartCanvas');
+  const coloringCanvas = document.getElementById('coloringCanvas');
+  const container = document.getElementById('canvasContainer');
+  const lineCtx = lineartCanvas.getContext('2d');
+  
+  function setupAndRestore(){
+    const img = new Image();
+    img.onload = function(){
+      const naturalW = img.naturalWidth;
+      const naturalH = img.naturalHeight;
+      
+      if(!naturalW || !naturalH){
+        showToast(currentLang==='zh'?'圖片加載失敗':'Image load failed','error');
+        return;
+      }
+      
+      // Calculate display size
+      const wrapper = document.querySelector('.canvas-wrapper');
+      const maxW = wrapper.clientWidth - 40;
+      const maxH = window.innerHeight * 0.75;
+      
+      let displayW = naturalW;
+      let displayH = naturalH;
+      const ratio = naturalW / naturalH;
+      
+      if(displayW > maxW){
+        displayW = maxW;
+        displayH = displayW / ratio;
+      }
+      if(displayH > maxH){
+        displayH = maxH;
+        displayW = displayH * ratio;
+      }
+      
+      displayW = Math.round(displayW);
+      displayH = Math.round(displayH);
+      
+      container.style.width = displayW + 'px';
+      container.style.height = displayH + 'px';
+      
+      lineartCanvas.width = naturalW;
+      lineartCanvas.height = naturalH;
+      coloringCanvas.width = naturalW;
+      coloringCanvas.height = naturalH;
+      
+      lineartCanvas.style.width = '100%';
+      lineartCanvas.style.height = '100%';
+      coloringCanvas.style.width = '100%';
+      coloringCanvas.style.height = '100%';
+      
+      // Draw lineart
+      lineCtx.clearRect(0, 0, naturalW, naturalH);
+      lineCtx.drawImage(img, 0, 0, naturalW, naturalH);
+      
+      // Extract lineart data
+      try{
+        lineartData = lineCtx.getImageData(0, 0, naturalW, naturalH);
+        if(!lineartData || !lineartData.data || lineartData.data.length === 0){
+          lineartData = null;
+        }
+      }catch(e){
+        lineartData = null;
+      }
+      
+      if(!lineartData && boundaryLock){
+        showToast(currentLang==='zh'?'⚠️ 邊界偵測無法使用（本地打開限制）':'⚠️ Boundary detection unavailable (local file limit)','info');
+      }
+      
+      // Restore coloring
+      const restoreImg = new Image();
+      restoreImg.onload = function(){
+        try{
+          const ctx = getCanvasCtx();
+          ctx.clearRect(0,0,coloringCanvas.width,coloringCanvas.height);
+          ctx.drawImage(restoreImg, 0, 0, coloringCanvas.width, coloringCanvas.height);
+          undoStack = [ctx.getImageData(0,0,coloringCanvas.width,coloringCanvas.height)];
+        }catch(e){
+          undoStack = [];
+        }
+        redoStack = [];
+        updateProgress();
+      };
+      restoreImg.onerror = function(){
+        undoStack = [];
+        redoStack = [];
+        saveState();
+        updateProgress();
+      };
+      restoreImg.src = work.fullData;
+    };
+    img.onerror = function(){
+      coloringCanvas.width = 800;
+      coloringCanvas.height = 1100;
+      lineartCanvas.width = 800;
+      lineartCanvas.height = 1100;
+      container.style.width = '800px';
+      container.style.height = '1100px';
+      lineartData = null;
+      saveState();
+    };
+    img.src = page.img;
+  }
+  
+  requestAnimationFrame(function(){ setTimeout(setupAndRestore, 50); });
+}
+
+function deleteWork(id){
+  if(!confirm(currentLang==='zh'?'確定刪除這幅作品？':'Delete this artwork?')) return;
+  let works = getWorks();
+  works = works.filter(w=>w.id!==id);
+  try{
+    localStorage.setItem('sd_works',JSON.stringify(works));
+  }catch(e){}
+  stats.saved = works.length;
+  saveStats();
+  renderPortfolio();
+  showToast(currentLang==='zh'?'已刪除':'Deleted','success');
+}
+
+// ============ Achievements ============
+function renderAchievements(){
+  const grid = document.getElementById('achievementGrid');
+  grid.innerHTML = achievements.map(a=>{
+    const unlocked = unlockedAchievements.has(a.id);
+    const progress = a.target?Math.min(100,Math.round(getProgress(a)/a.target*100)):(unlocked?100:0);
+    return `
+      <div class="achievement-card ${unlocked?'unlocked':'locked'}">
+        <div class="achievement-icon">${a.icon}</div>
+        <h4>${currentLang==='zh'?a.nameZh:a.nameEn}</h4>
+        <p>${currentLang==='zh'?a.descZh:a.descEn}</p>
+        <div class="achievement-points">⭐ ${a.points} ${currentLang==='zh'?'點':'pts'}</div>
+        ${a.target?`<div class="achievement-progress"><div class="achievement-progress-bar" style="width:${progress}%"></div></div>`:''}
+      </div>
+    `;
+  }).join('');
+  
+  const unlocked = achievements.filter(a=>unlockedAchievements.has(a.id)).length;
+  document.getElementById('unlockedCount').textContent = unlocked;
+  document.getElementById('totalCount').textContent = achievements.length;
+  const totalPts = achievements.filter(a=>unlockedAchievements.has(a.id)).reduce((s,a)=>s+a.points,0);
+  document.getElementById('totalPoints').textContent = totalPts;
+}
+
+function getProgress(achv){
+  switch(achv.id){
+    case 'little_painter': case 'great_painter': case 'master': return stats.completed;
+    case 'explorer_3d': return stats.gen3d;
+    case 'rainbow': return stats.toolsUsed;
+    case 'collector': return stats.saved;
+    default: return 0;
+  }
+}
+
+function checkAchievements(){
+  let newUnlock = false;
+  achievements.forEach(a=>{
+    if(!unlockedAchievements.has(a.id)&&a.check(stats)){
+      unlockedAchievements.add(a.id);
+      newUnlock = true;
+      showAchievementPopup(a);
+    }
+  });
+  if(newUnlock){
+    try{
+      localStorage.setItem('sd_achv',JSON.stringify([...unlockedAchievements]));
+    }catch(e){}
+    renderAchievements();
+  }
+}
+
+function showAchievementPopup(achv){
+  showToast(`🏆 ${currentLang==='zh'?'解鎖成就':'Achievement Unlocked'}: ${currentLang==='zh'?achv.nameZh:achv.nameEn} +${achv.points}⭐`,'success');
+  // Confetti
+  for(let i=0;i<30;i++){
+    setTimeout(()=>{
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = Math.random()*100+'%';
+      c.style.background = ['#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#9B59B6','#FF9FF3'][Math.floor(Math.random()*6)];
+      c.style.animationDuration = (2+Math.random()*2)+'s';
+      c.style.animationDelay = Math.random()*0.5+'s';
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(),4000);
+    },i*50);
+  }
+}
+
+// ============ Stats ============
+function loadStats(){
+  try{
+    const s = JSON.parse(localStorage.getItem('sd_stats')||'{}');
+    stats = {...stats,...s};
+    stats.toolSet = new Set(s.toolSet||[]);
+  }catch(e){}
+  try{
+    unlockedAchievements = new Set(JSON.parse(localStorage.getItem('sd_achv')||'[]'));
+  }catch(e){}
+}
+
+function saveStats(){
+  try{
+    const s = {...stats,toolSet:[...stats.toolSet]};
+    localStorage.setItem('sd_stats',JSON.stringify(s));
+  }catch(e){}
+}
+
+// ============ Toast ============
+function showToast(msg,type=''){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show '+type;
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ============ 3D Viewer ============
+let threeLoaded = false;
+
+function generate3D(){
+  if(!currentPage) return;
+  stats.gen3d++;
+  saveStats();
+  checkAchievements();
+  
+  // Load Three.js dynamically
+  if(!threeLoaded){
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+    script.onload = function(){
+      threeLoaded = true;
+      init3D();
+    };
+    script.onerror = function(){
+      showToast(currentLang==='zh'?'3D 功能暫不可用':'3D not available','error');
+    };
+    document.head.appendChild(script);
+  } else {
+    init3D();
+  }
+}
+
+function init3D(){
+  document.getElementById('viewer3d').classList.add('active');
+  document.getElementById('viewer3dTitle').textContent = currentLang==='zh'?currentPage.titleZh:currentPage.titleEn;
+  
+  const canvas = document.getElementById('threeCanvas');
+  const container = document.getElementById('viewer3d');
+  
+  // Scene
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x0a0a1a);
+  threeScene = scene;
+  
+  // Camera
+  const camera = new THREE.PerspectiveCamera(60,container.clientWidth/container.clientHeight,0.1,1000);
+  camera.position.z = 8;
+  threeCamera = camera;
+  
+  // Renderer
+  if(threeRenderer){ threeRenderer.dispose(); }
+  const renderer = new THREE.WebGLRenderer({canvas,antialias:true});
+  renderer.setSize(container.clientWidth,container.clientHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.5));
+  threeRenderer = renderer;
+  
+  // Lights
+  const ambientLight = new THREE.AmbientLight(0xffffff,0.5);
+  scene.add(ambientLight);
+  const dirLight = new THREE.DirectionalLight(0xffffff,0.8);
+  dirLight.position.set(5,5,5);
+  scene.add(dirLight);
+  const pointLight = new THREE.PointLight(0xff9ff3,1,20);
+  pointLight.position.set(-3,2,3);
+  scene.add(pointLight);
+  
+  // Build scene based on page
+  build3DScene(currentPage.id, scene);
+  
+  // Stars background
+  const starGeo = new THREE.BufferGeometry();
+  const starCount = 300;
+  const starPos = new Float32Array(starCount*3);
+  for(let i=0;i<starCount;i++){
+    starPos[i*3] = (Math.random()-0.5)*60;
+    starPos[i*3+1] = (Math.random()-0.5)*40;
+    starPos[i*3+2] = (Math.random()-0.5)*40-10;
+  }
+  starGeo.setAttribute('position',new THREE.BufferAttribute(starPos,3));
+  const starMat = new THREE.PointsMaterial({color:0xffffff,size:0.1,transparent:true,opacity:0.8});
+  const stars = new THREE.Points(starGeo,starMat);
+  scene.add(stars);
+  
+  // Mouse controls (simple orbit)
+  let isDragging = false;
+  let prevX = 0, prevY = 0;
+  let rotY = 0, rotX = 0;
+  
+  function onDown(e){
+    isDragging = true;
+    prevX = e.clientX||e.touches[0].clientX;
+    prevY = e.clientY||e.touches[0].clientY;
+  }
+  function onMove(e){
+    if(!isDragging) return;
+    const x = e.clientX||e.touches[0].clientX;
+    const y = e.clientY||e.touches[0].clientY;
+    rotY += (x-prevX)*0.01;
+    rotX += (y-prevY)*0.01;
+    rotX = Math.max(-Math.PI/3,Math.min(Math.PI/3,rotX));
+    prevX = x; prevY = y;
+  }
+  function onUp(){ isDragging = false; }
+  function onWheel(e){
+    e.preventDefault();
+    camera.position.z += e.deltaY*0.01;
+    camera.position.z = Math.max(3,Math.min(20,camera.position.z));
+  }
+  
+  canvas.addEventListener('mousedown',onDown);
+  canvas.addEventListener('mousemove',onMove);
+  canvas.addEventListener('mouseup',onUp);
+  canvas.addEventListener('mouseleave',onUp);
+  canvas.addEventListener('touchstart',onDown);
+  canvas.addEventListener('touchmove',onMove);
+  canvas.addEventListener('touchend',onUp);
+  canvas.addEventListener('wheel',onWheel,{passive:false});
+  
+  // Animate
+  const clock = new THREE.Clock();
+  function animate(){
+    animationId = requestAnimationFrame(animate);
+    const t = clock.getElapsedTime();
+    
+    if(autoRotate && !isDragging){
+      rotY += 0.005;
+    }
+    
+    // Apply rotation and floating to main group
+    const mainGroup = scene.getObjectByName('mainGroup');
+    if(mainGroup){
+      mainGroup.rotation.y = rotY;
+      mainGroup.rotation.x = rotX;
+      // Gentle floating motion
+      const offset = mainGroup.userData.floatOffset || 0;
+      mainGroup.position.y = Math.sin(t * 0.8 + offset) * 0.15;
+    }
+    
+    // Animate sparkles
+    const sparkles = scene.getObjectByName('sparkles');
+    if(sparkles && sparkles.geometry){
+      const positions = sparkles.geometry.attributes.position.array;
+      const count = positions.length / 3;
+      for(let i = 0; i < count; i++){
+        // Gentle floating motion for each particle
+        positions[i*3+1] += Math.sin(t * 1.5 + i * 0.3) * 0.002;
+        positions[i*3] += Math.cos(t * 0.8 + i * 0.5) * 0.001;
+      }
+      sparkles.geometry.attributes.position.needsUpdate = true;
+    }
+    
+    // Animate stars background
+    if(typeof stars !== 'undefined' && stars){
+      stars.rotation.y = t * 0.02;
+    }
+    
+    renderer.render(scene, camera);
+  }
+  animate();
+  
+  // Resize
+  function onResize(){
+    camera.aspect = container.clientWidth/container.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(container.clientWidth,container.clientHeight);
+  }
+  window.addEventListener('resize',onResize);
+}
+
+function build3DScene(pageId, scene){
+  const group = new THREE.Group();
+  group.name = 'mainGroup';
+  
+  // Merge lineart + coloring into one image for 3D texture
+  const coloringCanvas = document.getElementById('coloringCanvas');
+  const lineartCanvas = document.getElementById('lineartCanvas');
+  
+  const mergeCanvas = document.createElement('canvas');
+  // Use canvas natural size for better texture quality
+  const texW = coloringCanvas.width || 800;
+  const texH = coloringCanvas.height || 1100;
+  mergeCanvas.width = texW;
+  mergeCanvas.height = texH;
+  const mctx = mergeCanvas.getContext('2d');
+  
+  // White background
+  mctx.fillStyle = '#ffffff';
+  mctx.fillRect(0, 0, texW, texH);
+  
+  // Draw coloring layer
+  try{
+    mctx.drawImage(coloringCanvas, 0, 0, texW, texH);
+  }catch(e){}
+  
+  // Draw lineart on top
+  try{
+    mctx.drawImage(lineartCanvas, 0, 0, texW, texH);
+  }catch(e){}
+  
+  const texture = new THREE.CanvasTexture(mergeCanvas);
+  texture.needsUpdate = true;
+  
+  // Main artwork - a thick plane (extruded look)
+  const aspect = texW / texH;
+  const artHeight = 5;
+  const artWidth = artHeight * aspect;
+  const artDepth = 0.3;
+  
+  // Front face (the artwork)
+  const frontGeo = new THREE.PlaneGeometry(artWidth, artHeight);
+  const frontMat = new THREE.MeshStandardMaterial({
+    map: texture,
+    side: THREE.FrontSide,
+    roughness: 0.7,
+    metalness: 0.1
+  });
+  const frontMesh = new THREE.Mesh(frontGeo, frontMat);
+  frontMesh.position.z = artDepth / 2;
+  group.add(frontMesh);
+  
+  // Back face
+  const backMat = new THREE.MeshStandardMaterial({
+    color: 0xf5f0e8,
+    roughness: 0.9,
+    metalness: 0
+  });
+  const backMesh = new THREE.Mesh(frontGeo, backMat);
+  backMesh.position.z = -artDepth / 2;
+  backMesh.rotation.y = Math.PI;
+  group.add(backMesh);
+  
+  // Side edges (thickness)
+  const edgeMat = new THREE.MeshStandardMaterial({
+    color: 0xe8e0d0,
+    roughness: 0.8,
+    metalness: 0
+  });
+  
+  // Top edge
+  const topGeo = new THREE.PlaneGeometry(artWidth, artDepth);
+  const topEdge = new THREE.Mesh(topGeo, edgeMat);
+  topEdge.rotation.x = -Math.PI / 2;
+  topEdge.position.y = artHeight / 2;
+  topEdge.position.z = 0;
+  group.add(topEdge);
+  
+  // Bottom edge
+  const bottomEdge = new THREE.Mesh(topGeo, edgeMat);
+  bottomEdge.rotation.x = Math.PI / 2;
+  bottomEdge.position.y = -artHeight / 2;
+  bottomEdge.position.z = 0;
+  group.add(bottomEdge);
+  
+  // Left edge
+  const sideGeo = new THREE.PlaneGeometry(artDepth, artHeight);
+  const leftEdge = new THREE.Mesh(sideGeo, edgeMat);
+  leftEdge.rotation.y = -Math.PI / 2;
+  leftEdge.position.x = -artWidth / 2;
+  group.add(leftEdge);
+  
+  // Right edge
+  const rightEdge = new THREE.Mesh(sideGeo, edgeMat);
+  rightEdge.rotation.y = Math.PI / 2;
+  rightEdge.position.x = artWidth / 2;
+  group.add(rightEdge);
+  
+  // Decorative floating particles based on page theme
+  const cat = currentPage ? currentPage.cat : 'fantasy';
+  let particleColor = 0xffdd88;
+  let particleCount = 80;
+  
+  if(cat === 'space'){
+    particleColor = 0x88ccff;
+    particleCount = 150;
+  } else if(cat === 'fantasy'){
+    particleColor = 0xff99ff;
+    particleCount = 100;
+  } else if(cat === 'nature'){
+    particleColor = 0x88ff99;
+    particleCount = 80;
+  } else if(cat === 'life'){
+    particleColor = 0xffcc88;
+    particleCount = 60;
+  }
+  
+  // Floating sparkles
+  const sparkleGeo = new THREE.BufferGeometry();
+  const sparklePos = new Float32Array(particleCount * 3);
+  const sparkleSizes = new Float32Array(particleCount);
+  for(let i = 0; i < particleCount; i++){
+    sparklePos[i*3] = (Math.random() - 0.5) * artWidth * 1.8;
+    sparklePos[i*3+1] = (Math.random() - 0.5) * artHeight * 1.5;
+    sparklePos[i*3+2] = (Math.random() - 0.5) * 3 - 1;
+    sparkleSizes[i] = Math.random() * 0.12 + 0.03;
+  }
+  sparkleGeo.setAttribute('position', new THREE.BufferAttribute(sparklePos, 3));
+  sparkleGeo.setAttribute('size', new THREE.BufferAttribute(sparkleSizes, 1));
+  
+  const sparkleMat = new THREE.PointsMaterial({
+    color: particleColor,
+    size: 0.1,
+    transparent: true,
+    opacity: 0.9,
+    blending: THREE.AdditiveBlending,
+    sizeAttenuation: true
+  });
+  const sparkles = new THREE.Points(sparkleGeo, sparkleMat);
+  sparkles.name = 'sparkles';
+  group.add(sparkles);
+  
+  // Glow light behind the art
+  const glowLight = new THREE.PointLight(particleColor, 0.8, 10);
+  glowLight.position.set(0, 0, -1);
+  group.add(glowLight);
+  
+  // Subtle floating animation target
+  group.userData.floatOffset = Math.random() * Math.PI * 2;
+  
+  scene.add(group);
+}
+
+function buildGenericScene(group, color, pageId){
+  // Default: floating colored cubes + character head
+  const geo = new THREE.BoxGeometry(1,1,1);
+  const mat = new THREE.MeshStandardMaterial({color,metalness:0.3,roughness:0.5});
+  for(let i=0;i<5;i++){
+    const cube = new THREE.Mesh(geo,mat.clone());
+    cube.position.set((Math.random()-0.5)*4,(Math.random()-0.5)*3,(Math.random()-0.5)*2);
+    cube.scale.setScalar(0.3+Math.random()*0.5);
+    cube.userData.floatSpeed = 0.5+Math.random();
+    cube.userData.floatOffset = Math.random()*Math.PI*2;
+    cube.name = 'floatCube';
+    group.add(cube);
+  }
+  
+  // Character head (sphere)
+  const headGeo = new THREE.SphereGeometry(1,12,12);
+  const skinMat = new THREE.MeshStandardMaterial({color:0xffe0bd,metalness:0.1,roughness:0.7});
+  const head = new THREE.Mesh(headGeo,skinMat);
+  head.position.y = 0.5;
+  head.name = 'characterHead';
+  group.add(head);
+  
+  // Eyes
+  const eyeGeo = new THREE.SphereGeometry(0.12,8,8);
+  const eyeMat = new THREE.MeshStandardMaterial({color:0x333333});
+  const eyeL = new THREE.Mesh(eyeGeo,eyeMat);
+  eyeL.position.set(-0.35,0.6,0.9);
+  const eyeR = new THREE.Mesh(eyeGeo,eyeMat);
+  eyeR.position.set(0.35,0.6,0.9);
+  head.add(eyeL); head.add(eyeR);
+  
+  // Cheeks
+  const cheekGeo = new THREE.SphereGeometry(0.15,8,8);
+  const cheekMat = new THREE.MeshStandardMaterial({color:0xffb6c1,transparent:true,opacity:0.7});
+  const cheekL = new THREE.Mesh(cheekGeo,cheekMat);
+  cheekL.position.set(-0.5,0.2,0.85);
+  const cheekR = new THREE.Mesh(cheekGeo,cheekMat);
+  cheekR.position.set(0.5,0.2,0.85);
+  head.add(cheekL); head.add(cheekR);
+}
+
+function buildRocketScene(group, color){
+  // Rocket body
+  const bodyGeo = new THREE.CylinderGeometry(0.4,0.6,2.5,12);
+  const bodyMat = new THREE.MeshStandardMaterial({color,metalness:0.3,roughness:0.4});
+  const body = new THREE.Mesh(bodyGeo,bodyMat);
+  body.position.y = 0.5;
+  body.name = 'rocketBody';
+  group.add(body);
+  
+  // Nose cone
+  const noseGeo = new THREE.ConeGeometry(0.4,0.8,12);
+  const noseMat = new THREE.MeshStandardMaterial({color:0xff6b6b,metalness:0.3,roughness:0.4});
+  const nose = new THREE.Mesh(noseGeo,noseMat);
+  nose.position.y = 2.15;
+  body.add(nose);
+  
+  // Window
+  const winGeo = new THREE.TorusGeometry(0.2,0.05,8,16);
+  const winMat = new THREE.MeshStandardMaterial({color:0x87ceeb,metalness:0.6,roughness:0.2,emissive:0x4488aa,emissiveIntensity:0.3});
+  const win = new THREE.Mesh(winGeo,winMat);
+  win.position.set(0,0.8,0.6);
+  win.rotation.x = Math.PI/2;
+  body.add(win);
+  
+  // Fins
+  const finGeo = new THREE.BoxGeometry(0.1,0.6,0.4);
+  const finMat = new THREE.MeshStandardMaterial({color:0xff6b6b,metalness:0.3,roughness:0.4});
+  for(let i=0;i<3;i++){
+    const fin = new THREE.Mesh(finGeo,finMat);
+    const angle = (i/3)*Math.PI*2;
+    fin.position.set(Math.cos(angle)*0.55,-0.8,Math.sin(angle)*0.55);
+    fin.rotation.y = angle;
+    body.add(fin);
+  }
+  
+  // Flame
+  const flameGeo = new THREE.ConeGeometry(0.35,1.2,8);
+  const flameMat = new THREE.MeshStandardMaterial({color:0xffaa00,emissive:0xff6600,emissiveIntensity:0.8,transparent:true,opacity:0.9});
+  const flame = new THREE.Mesh(flameGeo,flameMat);
+  flame.position.y = -1.8;
+  flame.rotation.x = Math.PI;
+  flame.name = 'flame';
+  body.add(flame);
+  
+  // Small character head next to rocket
+  const headGeo = new THREE.SphereGeometry(0.5,12,12);
+  const skinMat = new THREE.MeshStandardMaterial({color:0xffe0bd,metalness:0.1,roughness:0.7});
+  const head = new THREE.Mesh(headGeo,skinMat);
+  head.position.set(-1.5,-0.5,0);
+  head.name = 'characterHead';
+  group.add(head);
+  
+  // Eyes
+  const eyeGeo = new THREE.SphereGeometry(0.06,8,8);
+  const eyeMat = new THREE.MeshStandardMaterial({color:0x333333});
+  const eyeL = new THREE.Mesh(eyeGeo,eyeMat);
+  eyeL.position.set(-0.15,0.1,0.45);
+  const eyeR = new THREE.Mesh(eyeGeo,eyeMat);
+  eyeR.position.set(0.15,0.1,0.45);
+  head.add(eyeL); head.add(eyeR);
+}
+
+function buildSpaceFantasyScene(group, color){
+  // Planets
+  const planetColors = [0xff9ff3,0x9b59b6,0x6bcB77,0xffd93d];
+  for(let i=0;i<4;i++){
+    const size = 0.3+Math.random()*0.5;
+    const pGeo = new THREE.SphereGeometry(size,12,12);
+    const pMat = new THREE.MeshStandardMaterial({color:planetColors[i%4],metalness:0.2,roughness:0.6});
+    const planet = new THREE.Mesh(pGeo,pMat);
+    planet.position.set(
+      Math.cos(i/4*Math.PI*2)*2.5,
+      (Math.random()-0.5)*2,
+      Math.sin(i/4*Math.PI*2)*1.5
+    );
+    planet.name = 'planet'+i;
+    planet.userData.orbitSpeed = 0.2+Math.random()*0.3;
+    planet.userData.orbitRadius = 2.5+Math.random();
+    planet.userData.orbitOffset = i/4*Math.PI*2;
+    planet.userData.yBase = planet.position.y;
+    group.add(planet);
+    
+    // Ring for some planets
+    if(i%2===0){
+      const ringGeo = new THREE.TorusGeometry(size*1.6,0.05,8,24);
+      const ringMat = new THREE.MeshStandardMaterial({color:planetColors[(i+2)%4],metalness:0.3,roughness:0.5,side:THREE.DoubleSide});
+      const ring = new THREE.Mesh(ringGeo,ringMat);
+      ring.rotation.x = Math.PI/3;
+      planet.add(ring);
+    }
+  }
+  
+  // Spaceman character
+  const helmetGeo = new THREE.SphereGeometry(0.6,12,12);
+  const helmetMat = new THREE.MeshStandardMaterial({color:0xffffff,metalness:0.5,roughness:0.2,transparent:true,opacity:0.7});
+  const helmet = new THREE.Mesh(helmetGeo,helmetMat);
+  helmet.position.set(0,0.5,0);
+  helmet.name = 'spaceman';
+  group.add(helmet);
+  
+  // Face inside helmet
+  const faceGeo = new THREE.SphereGeometry(0.4,12,12);
+  const faceMat = new THREE.MeshStandardMaterial({color:0xffe0bd,metalness:0.1,roughness:0.7});
+  const face = new THREE.Mesh(faceGeo,faceMat);
+  face.position.set(0,0.5,0);
+  group.add(face);
+  
+  // Eyes
+  const eyeGeo = new THREE.SphereGeometry(0.06,8,8);
+  const eyeMat = new THREE.MeshStandardMaterial({color:0x333333});
+  const eyeL = new THREE.Mesh(eyeGeo,eyeMat);
+  eyeL.position.set(-0.15,0.6,0.35);
+  const eyeR = new THREE.Mesh(eyeGeo,eyeMat);
+  eyeR.position.set(0.15,0.6,0.35);
+  face.add(eyeL); face.add(eyeR);
+  
+  // Body
+  const bodyGeo = new THREE.CylinderGeometry(0.4,0.5,1,12);
+  const bodyMat = new THREE.MeshStandardMaterial({color,metalness:0.3,roughness:0.5});
+  const body = new THREE.Mesh(bodyGeo,bodyMat);
+  body.position.y = -0.5;
+  group.add(body);
+}
+
+function buildNightMarketScene(group, color){
+  // Lanterns
+  const lanternColors = [0xff6b6b,0xffd93d,0xff9ff3,0x6bcB77];
+  for(let i=0;i<8;i++){
+    const lGeo = new THREE.SphereGeometry(0.25,10,10);
+    const lMat = new THREE.MeshStandardMaterial({
+      color:lanternColors[i%4],
+      emissive:lanternColors[i%4],
+      emissiveIntensity:0.3,
+      metalness:0.1,
+      roughness:0.6
+    });
+    const lantern = new THREE.Mesh(lGeo,lMat);
+    lantern.position.set(
+      (Math.random()-0.5)*4,
+      Math.random()*2+0.5,
+      (Math.random()-0.5)*3
+    );
+    lantern.name = 'lantern'+i;
+    lantern.userData.floatSpeed = 0.5+Math.random()*0.5;
+    lantern.userData.floatOffset = Math.random()*Math.PI*2;
+    lantern.userData.swayOffset = Math.random()*Math.PI*2;
+    group.add(lantern);
+    
+    // Lantern top cap
+    const capGeo = new THREE.CylinderGeometry(0.1,0.15,0.08,8);
+    const capMat = new THREE.MeshStandardMaterial({color:0x8B4513});
+    const cap = new THREE.Mesh(capGeo,capMat);
+    cap.position.y = 0.25;
+    lantern.add(cap);
+    
+    // Light point
+    const light = new THREE.PointLight(lanternColors[i%4],0.3,2);
+    lantern.add(light);
+  }
+  
+  // Ground/street
+  const groundGeo = new THREE.BoxGeometry(6,0.2,4);
+  const groundMat = new THREE.MeshStandardMaterial({color:0x555555,roughness:0.8});
+  const ground = new THREE.Mesh(groundGeo,groundMat);
+  ground.position.y = -1.5;
+  group.add(ground);
+  
+  // Character
+  const headGeo = new THREE.SphereGeometry(0.45,12,12);
+  const skinMat = new THREE.MeshStandardMaterial({color:0xffe0bd,metalness:0.1,roughness:0.7});
+  const head = new THREE.Mesh(headGeo,skinMat);
+  head.position.set(0,0,0);
+  head.name = 'characterHead';
+  group.add(head);
+  
+  const eyeGeo = new THREE.SphereGeometry(0.05,8,8);
+  const eyeMat = new THREE.MeshStandardMaterial({color:0x333333});
+  const eyeL = new THREE.Mesh(eyeGeo,eyeMat);
+  eyeL.position.set(-0.15,0.08,0.4);
+  const eyeR = new THREE.Mesh(eyeGeo,eyeMat);
+  eyeR.position.set(0.15,0.08,0.4);
+  head.add(eyeL); head.add(eyeR);
+  
+  // Body
+  const bodyGeo = new THREE.CylinderGeometry(0.35,0.4,0.8,12);
+  const bodyMat = new THREE.MeshStandardMaterial({color,metalness:0.2,roughness:0.6});
+  const body = new THREE.Mesh(bodyGeo,bodyMat);
+  body.position.y = -0.8;
+  group.add(body);
+}
+
+function buildUnderseaScene(group, color){
+  // Sea floor
+  const floorGeo = new THREE.CylinderGeometry(3,3.5,0.5,16);
+  const floorMat = new THREE.MeshStandardMaterial({color:0xd4a574,roughness:0.9});
+  const floor = new THREE.Mesh(floorGeo,floorMat);
+  floor.position.y = -2;
+  group.add(floor);
+  
+  // Seaweed
+  for(let i=0;i<6;i++){
+    const swGeo = new THREE.CylinderGeometry(0.05,0.08,1.5,6);
+    const swMat = new THREE.MeshStandardMaterial({color:0x2ecc71,roughness:0.7});
+    const sw = new THREE.Mesh(swGeo,swMat);
+    const angle = (i/6)*Math.PI*2;
+    sw.position.set(Math.cos(angle)*2,-1,Math.sin(angle)*2);
+    sw.name = 'seaweed'+i;
+    sw.userData.swaySpeed = 1+Math.random();
+    sw.userData.swayOffset = Math.random()*Math.PI*2;
+    group.add(sw);
+  }
+  
+  // Fish
+  const fishColors = [0xff6b6b,0xffd93d,0x6bcB77,0xff9ff3];
+  for(let i=0;i<5;i++){
+    const fGeo = new THREE.SphereGeometry(0.2,10,8);
+    fGeo.scale(1.3,0.8,1);
+    const fMat = new THREE.MeshStandardMaterial({color:fishColors[i%4],metalness:0.2,roughness:0.5});
+    const fish = new THREE.Mesh(fGeo,fMat);
+    fish.position.set(
+      (Math.random()-0.5)*4,
+      Math.random()*1.5-0.5,
+      (Math.random()-0.5)*3
+    );
+    fish.name = 'fish'+i;
+    fish.userData.swimSpeed = 1+Math.random()*2;
+    fish.userData.swimRadius = 1+Math.random();
+    fish.userData.swimOffset = Math.random()*Math.PI*2;
+    fish.userData.yBase = fish.position.y;
+    group.add(fish);
+    
+    // Tail
+    const tailGeo = new THREE.ConeGeometry(0.12,0.2,6);
+    const tail = new THREE.Mesh(tailGeo,fMat);
+    tail.position.set(-0.25,0,0);
+    tail.rotation.z = Math.PI/2;
+    fish.add(tail);
+  }
+  
+  // Bubbles
+  const bubbleGeo = new THREE.SphereGeometry(0.08,8,8);
+  const bubbleMat = new THREE.MeshStandardMaterial({color:0x87ceeb,transparent:true,opacity:0.4,metalness:0.5,roughness:0.2});
+  for(let i=0;i<12;i++){
+    const bubble = new THREE.Mesh(bubbleGeo,bubbleMat);
+    bubble.position.set(
+      (Math.random()-0.5)*4,
+      Math.random()*3-1.5,
+      (Math.random()-0.5)*3
+    );
+    bubble.scale.setScalar(0.5+Math.random());
+    bubble.name = 'bubble'+i;
+    bubble.userData.riseSpeed = 0.5+Math.random();
+    bubble.userData.riseOffset = Math.random()*Math.PI*2;
+    group.add(bubble);
+  }
+  
+  // Diver character
+  const headGeo = new THREE.SphereGeometry(0.45,12,12);
+  const helmetMat = new THREE.MeshStandardMaterial({color:0x87ceeb,metalness:0.5,roughness:0.2,transparent:true,opacity:0.5});
+  const helmet = new THREE.Mesh(headGeo,helmetMat);
+  helmet.position.y = 0.5;
+  helmet.name = 'diver';
+  group.add(helmet);
+  
+  const faceGeo = new THREE.SphereGeometry(0.35,12,12);
+  const faceMat = new THREE.MeshStandardMaterial({color:0xffe0bd,metalness:0.1,roughness:0.7});
+  const face = new THREE.Mesh(faceGeo,faceMat);
+  face.position.y = 0.5;
+  group.add(face);
+  
+  // Body
+  const bodyGeo = new THREE.CylinderGeometry(0.35,0.4,0.9,12);
+  const bodyMat = new THREE.MeshStandardMaterial({color,metalness:0.3,roughness:0.5});
+  const body = new THREE.Mesh(bodyGeo,bodyMat);
+  body.position.y = -0.4;
+  group.add(body);
+}
+
+function buildMagicScene(group, color){
+  // Magic circle on floor
+  const ringGeo = new THREE.TorusGeometry(1.5,0.08,8,32);
+  const ringMat = new THREE.MeshStandardMaterial({color,emissive:color,emissiveIntensity:0.6,metalness:0.5,roughness:0.3});
+  const ring = new THREE.Mesh(ringGeo,ringMat);
+  ring.rotation.x = -Math.PI/2;
+  ring.position.y = -1.5;
+  ring.name = 'magicRing';
+  group.add(ring);
+  
+  const ring2Geo = new THREE.TorusGeometry(1,0.05,8,24);
+  const ring2 = new THREE.Mesh(ring2Geo,ringMat.clone());
+  ring2.rotation.x = -Math.PI/2;
+  ring2.position.y = -1.49;
+  ring2.name = 'magicRing2';
+  group.add(ring2);
+  
+  // Runes (small cubes around the circle)
+  for(let i=0;i<8;i++){
+    const runeGeo = new THREE.BoxGeometry(0.1,0.15,0.1);
+    const runeMat = new THREE.MeshStandardMaterial({color:0xffd93d,emissive:0xffaa00,emissiveIntensity:0.5});
+    const rune = new THREE.Mesh(runeGeo,runeMat);
+    const angle = (i/8)*Math.PI*2;
+    rune.position.set(Math.cos(angle)*1.5,-1.4,Math.sin(angle)*1.5);
+    rune.name = 'rune'+i;
+    rune.userData.glowOffset = i/8*Math.PI*2;
+    group.add(rune);
+  }
+  
+  // Character on creature
+  // Creature body (round pet)
+  const petGeo = new THREE.SphereGeometry(0.7,12,12);
+  const petMat = new THREE.MeshStandardMaterial({color:0xffeaa7,metalness:0.1,roughness:0.6});
+  const pet = new THREE.Mesh(petGeo,petMat);
+  pet.position.y = -0.5;
+  pet.name = 'pet';
+  group.add(pet);
+  
+  // Pet eyes
+  const petEyeGeo = new THREE.SphereGeometry(0.08,8,8);
+  const petEyeMat = new THREE.MeshStandardMaterial({color:0x333333});
+  const pEyeL = new THREE.Mesh(petEyeGeo,petEyeMat);
+  pEyeL.position.set(-0.25,0.1,0.6);
+  const pEyeR = new THREE.Mesh(petEyeGeo,petEyeMat);
+  pEyeR.position.set(0.25,0.1,0.6);
+  pet.add(pEyeL); pet.add(pEyeR);
+  
+  // Pet star on belly
+  const starGeo = new THREE.OctahedronGeometry(0.15,0);
+  const starMat = new THREE.MeshStandardMaterial({color,emissive:color,emissiveIntensity:0.4});
+  const star = new THREE.Mesh(starGeo,starMat);
+  star.position.set(0,-0.2,0.65);
+  pet.add(star);
+  
+  // Character sitting on pet
+  const headGeo = new THREE.SphereGeometry(0.4,12,12);
+  const skinMat = new THREE.MeshStandardMaterial({color:0xffe0bd,metalness:0.1,roughness:0.7});
+  const head = new THREE.Mesh(headGeo,skinMat);
+  head.position.set(0,0.4,0);
+  head.name = 'characterHead';
+  group.add(head);
+  
+  const eyeGeo = new THREE.SphereGeometry(0.05,8,8);
+  const eyeMat = new THREE.MeshStandardMaterial({color:0x333333});
+  const eyeL = new THREE.Mesh(eyeGeo,eyeMat);
+  eyeL.position.set(-0.12,0.08,0.35);
+  const eyeR = new THREE.Mesh(eyeGeo,eyeMat);
+  eyeR.position.set(0.12,0.08,0.35);
+  head.add(eyeL); head.add(eyeR);
+  
+  // Magic particles
+  const particleGeo = new THREE.BufferGeometry();
+  const pCount = 50;
+  const pPos = new Float32Array(pCount*3);
+  for(let i=0;i<pCount;i++){
+    pPos[i*3] = (Math.random()-0.5)*3;
+    pPos[i*3+1] = Math.random()*3;
+    pPos[i*3+2] = (Math.random()-0.5)*3;
+  }
+  particleGeo.setAttribute('position',new THREE.BufferAttribute(pPos,3));
+  const particleMat = new THREE.PointsMaterial({color,size:0.08,transparent:true,opacity:0.8,blending:THREE.AdditiveBlending});
+  const particles = new THREE.Points(particleGeo,particleMat);
+  particles.name = 'magicParticles';
+  group.add(particles);
+}
+
+function buildMeteorScene(group, color){
+  // Planet surface
+  const planetGeo = new THREE.SphereGeometry(2.5,16,16);
+  const planetMat = new THREE.MeshStandardMaterial({color:0x8B7355,roughness:0.9});
+  const planet = new THREE.Mesh(planetGeo,planetMat);
+  planet.position.y = -3;
+  group.add(planet);
+  
+  // Three characters sitting
+  const charColors = [color, 0xffeaa7, 0xb388ff];
+  for(let i=0;i<3;i++){
+    const headGeo = new THREE.SphereGeometry(0.25,10,10);
+    const skinMat = new THREE.MeshStandardMaterial({color:i===1?0xffeaa7:0xffe0bd,metalness:0.1,roughness:0.7});
+    const head = new THREE.Mesh(headGeo,skinMat);
+    head.position.set((i-1)*0.7,-0.8,0.5);
+    head.name = 'char'+i;
+    group.add(head);
+    
+    const eyeGeo = new THREE.SphereGeometry(0.03,6,6);
+    const eyeMat = new THREE.MeshStandardMaterial({color:0x333333});
+    const eyeL = new THREE.Mesh(eyeGeo,eyeMat);
+    eyeL.position.set(-0.08,0.04,0.22);
+    const eyeR = new THREE.Mesh(eyeGeo,eyeMat);
+    eyeR.position.set(0.08,0.04,0.22);
+    head.add(eyeL); head.add(eyeR);
+    
+    // Third char has 3 eyes
+    if(i===2){
+      const eyeM = new THREE.Mesh(eyeGeo,eyeMat);
+      eyeM.position.set(0,0.1,0.22);
+      head.add(eyeM);
+    }
+    
+    // Body
+    const bodyGeo = new THREE.CylinderGeometry(0.2,0.25,0.4,10);
+    const bodyMat = new THREE.MeshStandardMaterial({color:charColors[i],metalness:0.2,roughness:0.6});
+    const body = new THREE.Mesh(bodyGeo,bodyMat);
+    body.position.set((i-1)*0.7,-1.2,0.5);
+    group.add(body);
+  }
+  
+  // Meteors
+  const meteorGeo = new THREE.ConeGeometry(0.05,0.5,6);
+  const meteorMat = new THREE.MeshStandardMaterial({color:0xffd93d,emissive:0xff8800,emissiveIntensity:0.8});
+  for(let i=0;i<15;i++){
+    const meteor = new THREE.Mesh(meteorGeo,meteorMat.clone());
+    meteor.position.set(
+      (Math.random()-0.5)*8,
+      Math.random()*4+2,
+      (Math.random()-0.5)*4-2
+    );
+    meteor.rotation.z = Math.PI/4;
+    meteor.name = 'meteor'+i;
+    meteor.userData.fallSpeed = 2+Math.random()*3;
+    meteor.userData.fallOffset = Math.random()*5;
+    meteor.userData.xDrift = (Math.random()-0.5)*2;
+    group.add(meteor);
+  }
+  
+  // Hearts floating
+  for(let i=0;i<5;i++){
+    const hGeo = new THREE.SphereGeometry(0.08,8,8);
+    const hMat = new THREE.MeshStandardMaterial({color:0xff6b9d,emissive:0xff6b9d,emissiveIntensity:0.3});
+    const heart = new THREE.Mesh(hGeo,hMat);
+    heart.position.set(
+      (Math.random()-0.5)*4,
+      Math.random()*2,
+      (Math.random()-0.5)*2+1
+    );
+    heart.scale.set(1,0.8,0.5);
+    heart.name = 'heart'+i;
+    heart.userData.floatSpeed = 0.5+Math.random()*0.5;
+    heart.userData.floatOffset = Math.random()*Math.PI*2;
+    group.add(heart);
+  }
+}
+
+function buildWorldTourScene(group, color){
+  // Earth
+  const earthGeo = new THREE.SphereGeometry(1.8,16,16);
+  const earthMat = new THREE.MeshStandardMaterial({color:0x4a90d9,metalness:0.2,roughness:0.6});
+  const earth = new THREE.Mesh(earthGeo,earthMat);
+  earth.position.y = -0.5;
+  earth.name = 'earth';
+  group.add(earth);
+  
+  // Continents (green patches)
+  const contColors = [0x2ecc71,0x27ae60,0x2ecc71];
+  for(let i=0;i<5;i++){
+    const contGeo = new THREE.SphereGeometry(0.6+Math.random()*0.4,8,8);
+    const contMat = new THREE.MeshStandardMaterial({color:contColors[i%3],metalness:0.1,roughness:0.8});
+    const cont = new THREE.Mesh(contGeo,contMat);
+    const lat = (Math.random()-0.5)*Math.PI;
+    const lon = Math.random()*Math.PI*2;
+    const r = 1.82;
+    cont.position.set(
+      r*Math.cos(lat)*Math.cos(lon),
+      r*Math.sin(lat),
+      r*Math.cos(lat)*Math.sin(lon)
+    );
+    cont.scale.set(0.3,0.3,0.1);
+    earth.add(cont);
+  }
+  
+  // Rocket orbiting
+  const rocketGroup = new THREE.Group();
+  rocketGroup.name = 'orbitRocket';
+  group.add(rocketGroup);
+  
+  const bodyGeo = new THREE.CylinderGeometry(0.15,0.2,0.8,10);
+  const bodyMat = new THREE.MeshStandardMaterial({color,metalness:0.3,roughness:0.4});
+  const body = new THREE.Mesh(bodyGeo,bodyMat);
+  body.rotation.z = -Math.PI/2;
+  rocketGroup.add(body);
+  
+  const noseGeo = new THREE.ConeGeometry(0.15,0.3,10);
+  const noseMat = new THREE.MeshStandardMaterial({color:0xff6b6b,metalness:0.3,roughness:0.4});
+  const nose = new THREE.Mesh(noseGeo,noseMat);
+  nose.position.x = 0.55;
+  nose.rotation.z = -Math.PI/2;
+  body.add(nose);
+  
+  // Flame
+  const flameGeo = new THREE.ConeGeometry(0.1,0.4,8);
+  const flameMat = new THREE.MeshStandardMaterial({color:0xffaa00,emissive:0xff6600,emissiveIntensity:0.8,transparent:true,opacity:0.9});
+  const flame = new THREE.Mesh(flameGeo,flameMat);
+  flame.position.x = -0.6;
+  flame.rotation.z = Math.PI/2;
+  flame.name = 'rocketFlame';
+  body.add(flame);
+  
+  // Character on rocket
+  const headGeo = new THREE.SphereGeometry(0.12,10,10);
+  const skinMat = new THREE.MeshStandardMaterial({color:0xffe0bd,metalness:0.1,roughness:0.7});
+  const head = new THREE.Mesh(headGeo,skinMat);
+  head.position.set(0,0.2,0);
+  body.add(head);
+  
+  // Rainbow arc
+  const rainbowColors = [0xff6b6b,0xffd93d,0x6bcB77,0x4D96FF,0x9B59B6];
+  for(let i=0;i<5;i++){
+    const rGeo = new THREE.TorusGeometry(2.8+i*0.1,0.05,8,24,Math.PI);
+    const rMat = new THREE.MeshStandardMaterial({color:rainbowColors[i],transparent:true,opacity:0.6,side:THREE.DoubleSide});
+    const rainbow = new THREE.Mesh(rGeo,rMat);
+    rainbow.rotation.z = Math.PI;
+    rainbow.position.y = -0.5;
+    rainbow.name = 'rainbow'+i;
+    group.add(rainbow);
+  }
+  
+  // Clouds
+  for(let i=0;i<4;i++){
+    const cloudGeo = new THREE.SphereGeometry(0.3,8,8);
+    const cloudMat = new THREE.MeshStandardMaterial({color:0xffffff,transparent:true,opacity:0.9});
+    const cloud = new THREE.Mesh(cloudGeo,cloudMat);
+    cloud.position.set(
+      (Math.random()-0.5)*5,
+      Math.random()*1.5+1,
+      (Math.random()-0.5)*2-1
+    );
+    cloud.scale.set(1.5,0.7,1);
+    cloud.name = 'cloud'+i;
+    cloud.userData.floatSpeed = 0.2+Math.random()*0.2;
+    cloud.userData.floatOffset = Math.random()*Math.PI*2;
+    group.add(cloud);
+  }
+}
+
+function animate3DScene(pageId, t, scene){
+  const mainGroup = scene.getObjectByName('mainGroup');
+  if(!mainGroup) return;
+  
+  switch(pageId){
+    case 1: {
+      const rocket = scene.getObjectByName('rocketBody');
+      if(rocket){
+        rocket.position.y = 0.5+Math.sin(t*1.5)*0.3;
+      }
+      const flame = scene.getObjectByName('flame');
+      if(flame){
+        flame.scale.y = 1+Math.sin(t*20)*0.3;
+      }
+      const head = scene.getObjectByName('characterHead');
+      if(head){
+        head.position.y = -0.5+Math.sin(t*2)*0.1;
+      }
+      break;
+    }
+    case 2: {
+      for(let i=0;i<4;i++){
+        const p = scene.getObjectByName('planet'+i);
+        if(p && p.userData.orbitRadius){
+          const angle = t*p.userData.orbitSpeed+p.userData.orbitOffset;
+          p.position.x = Math.cos(angle)*p.userData.orbitRadius;
+          p.position.z = Math.sin(angle)*p.userData.orbitRadius;
+          p.position.y = p.userData.yBase+Math.sin(t*2+p.userData.orbitOffset)*0.2;
+          p.rotation.y += 0.01;
+        }
+      }
+      const spaceman = scene.getObjectByName('spaceman');
+      if(spaceman){
+        spaceman.position.y = 0.5+Math.sin(t)*0.2;
+      }
+      break;
+    }
+    case 3: {
+      for(let i=0;i<8;i++){
+        const l = scene.getObjectByName('lantern'+i);
+        if(l){
+          l.position.y += Math.sin(t*l.userData.floatSpeed+l.userData.floatOffset)*0.003;
+          l.position.x += Math.sin(t*0.5+l.userData.swayOffset)*0.002;
+        }
+      }
+      break;
+    }
+    case 7: {
+      // Fish swim
+      for(let i=0;i<5;i++){
+        const f = scene.getObjectByName('fish'+i);
+        if(f && f.userData.swimRadius){
+          const angle = t*f.userData.swimSpeed+f.userData.swimOffset;
+          f.position.x = Math.cos(angle)*f.userData.swimRadius;
+          f.position.z = Math.sin(angle)*f.userData.swimRadius;
+          f.position.y = f.userData.yBase+Math.sin(t*2+f.userData.swimOffset)*0.2;
+          f.rotation.y = -angle;
+        }
+      }
+      // Bubbles rise
+      for(let i=0;i<12;i++){
+        const b = scene.getObjectByName('bubble'+i);
+        if(b){
+          b.position.y += 0.01*b.userData.riseSpeed;
+          if(b.position.y>2) b.position.y = -1.5;
+          b.position.x += Math.sin(t+b.userData.riseOffset)*0.003;
+        }
+      }
+      // Seaweed sway
+      for(let i=0;i<6;i++){
+        const sw = scene.getObjectByName('seaweed'+i);
+        if(sw){
+          sw.rotation.z = Math.sin(t*sw.userData.swaySpeed+sw.userData.swayOffset)*0.1;
+        }
+      }
+      break;
+    }
+    case 15: {
+      const ring = scene.getObjectByName('magicRing');
+      if(ring) ring.rotation.z += 0.02;
+      const ring2 = scene.getObjectByName('magicRing2');
+      if(ring2) ring2.rotation.z -= 0.03;
+      
+      for(let i=0;i<8;i++){
+        const r = scene.getObjectByName('rune'+i);
+        if(r){
+          const mat = r.material;
+          if(mat.emissiveIntensity !== undefined){
+            mat.emissiveIntensity = 0.3+Math.sin(t*3+r.userData.glowOffset)*0.3;
+          }
+        }
+      }
+      
+      const particles = scene.getObjectByName('magicParticles');
+      if(particles){
+        particles.rotation.y += 0.01;
+        const pos = particles.geometry.attributes.position;
+        for(let i=0;i<pos.count;i++){
+          pos.setY(i, pos.getY(i)+0.01);
+          if(pos.getY(i)>3) pos.setY(i, 0);
+        }
+        pos.needsUpdate = true;
+      }
+      
+      const pet = scene.getObjectByName('pet');
+      if(pet) pet.position.y = -0.5+Math.sin(t*2)*0.1;
+      break;
+    }
+    case 17: {
+      for(let i=0;i<15;i++){
+        const m = scene.getObjectByName('meteor'+i);
+        if(m && m.userData.fallSpeed){
+          m.position.y -= 0.03*m.userData.fallSpeed;
+          m.position.x += 0.01*m.userData.xDrift;
+          if(m.position.y<-2){
+            m.position.y = 5+Math.random()*2;
+            m.position.x = (Math.random()-0.5)*8;
+          }
+        }
+      }
+      for(let i=0;i<5;i++){
+        const h = scene.getObjectByName('heart'+i);
+        if(h){
+          h.position.y += 0.005*h.userData.floatSpeed;
+          h.position.x += Math.sin(t+h.userData.floatOffset)*0.003;
+          if(h.position.y>3) h.position.y = -1;
+        }
+      }
+      // Characters breathe
+      for(let i=0;i<3;i++){
+        const c = scene.getObjectByName('char'+i);
+        if(c){
+          c.position.y = -0.8+Math.sin(t*2+i)*0.05;
+        }
+      }
+      break;
+    }
+    case 20: {
+      const earth = scene.getObjectByName('earth');
+      if(earth) earth.rotation.y += 0.005;
+      
+      const rocket = scene.getObjectByName('orbitRocket');
+      if(rocket){
+        rocket.rotation.y += 0.02;
+        rocket.position.y = Math.sin(t*2)*0.3;
+      }
+      
+      const flame = scene.getObjectByName('rocketFlame');
+      if(flame){
+        flame.scale.x = 1+Math.sin(t*30)*0.3;
+      }
+      
+      for(let i=0;i<4;i++){
+        const c = scene.getObjectByName('cloud'+i);
+        if(c){
+          c.position.x += 0.005*c.userData.floatSpeed;
+          if(c.position.x>3) c.position.x = -3;
+          c.position.y = 1+Math.sin(t+c.userData.floatOffset)*0.1;
+        }
+      }
+      break;
+    }
+    default: {
+      // Generic floating cubes
+      const cubes = [];
+      mainGroup.children.forEach(c=>{
+        if(c.name==='floatCube') cubes.push(c);
+      });
+      cubes.forEach((cube,i)=>{
+        cube.position.y += Math.sin(t*cube.userData.floatSpeed+cube.userData.floatOffset)*0.005;
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.005;
+      });
+      const head = scene.getObjectByName('characterHead');
+      if(head){
+        head.position.y = 0.5+Math.sin(t*1.5)*0.1;
+      }
+    }
+  }
+}
+
+function close3D(){
+  document.getElementById('viewer3d').classList.remove('active');
+  if(animationId){
+    cancelAnimationFrame(animationId);
+    animationId = null;
+  }
+  if(threeRenderer){
+    threeRenderer.dispose();
+    threeRenderer = null;
+  }
+  threeScene = null;
+  threeCamera = null;
+}
+
+function toggleAutoRotate(){
+  autoRotate = !autoRotate;
+  document.getElementById('autoRotateBtn').textContent = autoRotate?(currentLang==='zh'?'⏸️ 暫停旋轉':'⏸️ Pause'):(currentLang==='zh'?'▶️ 自動旋轉':'▶️ Auto');
+}
+
+// ============ AI True 3D Viewer (Three.js Displacement) ============
+let true3dScene = null;
+let true3dCamera = null;
+let true3dRenderer = null;
+let true3dControls = null;
+let true3dCharacter = null;
+let true3dAutoRotate = true;
+let true3dAnimFrame = null;
+let true3dClock = null;
+let true3dParticles = null;
+let true3dWireframe = false;
+let true3dLoaded = false;
+
+const true3dPageConfig = {
+  1: {
+    color: '3d_animated/page_01_normal.jpg',
+    depth: '3d_views/page_01_depth.jpg',
+    views: {
+      front: '3d_views/page_01_front.jpg',
+      right: '3d_views/page_01_right.jpg',
+      left: '3d_views/page_01_left.jpg',
+      back: '3d_views/page_01_back.jpg'
+    },
+    hasMultiView: true
+  },
+  2: {
+    color: '3d_animated/page_02_normal.jpg',
+    depth: '3d_views/page_02_depth.jpg',
+    views: {
+      front: '3d_views/page_02_front.jpg',
+      right: '3d_views/page_02_right.jpg',
+      left: '3d_views/page_02_left.jpg',
+      back: '3d_views/page_02_back.jpg'
+    },
+    hasMultiView: true
+  }
+};
+
+function initTrue3D(){
+  if(true3dScene) return true;
+  
+  const container = document.getElementById('true3dCanvas');
+  if(!container) return false;
+  
+  if(typeof THREE === 'undefined'){
+    // Load Three.js
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+    script.onload = function(){
+      // Load OrbitControls from cdnjs
+      const controlsScript = document.createElement('script');
+      controlsScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/controls/OrbitControls.js';
+      controlsScript.onload = function(){
+        try { setupTrue3DScene(); } catch(e){ console.error('Setup error:', e); }
+      };
+      controlsScript.onerror = function(){
+        // Fallback: try jsdelivr
+        const fbScript = document.createElement('script');
+        fbScript.src = 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js';
+        fbScript.onload = function(){
+          try { setupTrue3DScene(); } catch(e){ console.error('Setup error:', e); }
+        };
+        fbScript.onerror = function(){
+          // Last fallback: setup without controls
+          try { setupTrue3DScene(); } catch(e){ console.error('Setup error:', e); }
+        };
+        document.head.appendChild(fbScript);
+      };
+      document.head.appendChild(controlsScript);
+    };
+    script.onerror = function(){
+      console.error('Failed to load Three.js');
+      showToast(currentLang==='zh'?'❌ 3D引擎加載失敗，請檢查網絡':'❌ 3D engine failed to load','error');
+    };
+    document.head.appendChild(script);
+    return false;
+  }
+  
+  try {
+    setupTrue3DScene();
+  } catch(e){
+    console.error('Setup error:', e);
+    showToast(currentLang==='zh'?'❌ 3D初始化失敗':'❌ 3D init failed','error');
+    return false;
+  }
+  return true;
+}
+
+function setupTrue3DScene(){
+  const container = document.getElementById('true3dCanvas');
+  if(!container || typeof THREE === 'undefined') return;
+  
+  const w = container.clientWidth || window.innerWidth;
+  const h = container.clientHeight || window.innerHeight;
+  
+  // Scene
+  true3dScene = new THREE.Scene();
+  true3dScene.background = null;
+  
+  // Camera
+  true3dCamera = new THREE.PerspectiveCamera(45, w / h, 0.1, 1000);
+  true3dCamera.position.set(0, 0, 3.5);
+  
+  // Renderer
+  true3dRenderer = new THREE.WebGLRenderer({ 
+    antialias: true, 
+    alpha: true, 
+    preserveDrawingBuffer: true,
+    powerPreference: 'high-performance'
+  });
+  true3dRenderer.setSize(w, h);
+  true3dRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  true3dRenderer.outputEncoding = THREE.sRGBEncoding;
+  true3dRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+  true3dRenderer.toneMappingExposure = 1.2;
+  container.appendChild(true3dRenderer.domElement);
+  
+  // Orbit Controls
+  if(THREE.OrbitControls){
+    try {
+      true3dControls = new THREE.OrbitControls(true3dCamera, true3dRenderer.domElement);
+      true3dControls.enableDamping = true;
+      true3dControls.dampingFactor = 0.05;
+      true3dControls.minDistance = 1.5;
+      true3dControls.maxDistance = 8;
+      true3dControls.autoRotate = true3dAutoRotate;
+      true3dControls.autoRotateSpeed = 1.0;
+      true3dControls.maxPolarAngle = Math.PI * 0.85;
+      true3dControls.minPolarAngle = Math.PI * 0.15;
+      true3dControls.enablePan = false;
+    } catch(e){
+      console.warn('OrbitControls init failed:', e);
+    }
+  }
+  
+  // Lighting - 5 light system
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+  true3dScene.add(ambientLight);
+  
+  const hemiLight = new THREE.HemisphereLight(0xaaccff, 0x442266, 0.4);
+  true3dScene.add(hemiLight);
+  
+  const mainLight = new THREE.DirectionalLight(0xffffff, 1.0);
+  mainLight.position.set(2, 2, 4);
+  true3dScene.add(mainLight);
+  
+  const fillLight = new THREE.DirectionalLight(0x88aaff, 0.4);
+  fillLight.position.set(-3, 1, -2);
+  true3dScene.add(fillLight);
+  
+  const rimLight = new THREE.DirectionalLight(0xff99cc, 0.5);
+  rimLight.position.set(0, 2, -3);
+  true3dScene.add(rimLight);
+  
+  // Particle starfield
+  createTrue3DParticles();
+  
+  // Clock
+  true3dClock = new THREE.Clock();
+  true3dLoaded = true;
+  
+  // Start animation
+  animateTrue3D();
+  
+  // Resize handler
+  window.addEventListener('resize', onTrue3DResize);
+  
+  // If viewer is already open, load character immediately
+  const viewer = document.getElementById('ai3dViewer');
+  if(viewer && viewer.classList.contains('active') && currentPage){
+    loadTrue3DCharacter(currentPage.id);
+  }
+}
+
+function createTrue3DParticles(){
+  const particleCount = 500;
+  const geometry = new THREE.BufferGeometry();
+  const positions = new Float32Array(particleCount * 3);
+  const colors = new Float32Array(particleCount * 3);
+  
+  for(let i = 0; i < particleCount; i++){
+    const i3 = i * 3;
+    const radius = 8 + Math.random() * 12;
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(2 * Math.random() - 1);
+    
+    positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
+    positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+    positions[i3 + 2] = radius * Math.cos(phi);
+    
+    const colorType = Math.random();
+    if(colorType < 0.5){
+      colors[i3] = 1; colors[i3 + 1] = 1; colors[i3 + 2] = 1;
+    } else if(colorType < 0.7){
+      colors[i3] = 0.6; colors[i3 + 1] = 0.7; colors[i3 + 2] = 1;
+    } else if(colorType < 0.9){
+      colors[i3] = 1; colors[i3 + 1] = 0.6; colors[i3 + 2] = 0.9;
+    } else {
+      colors[i3] = 1; colors[i3 + 1] = 0.85; colors[i3 + 2] = 0.3;
+    }
+  }
+  
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  
+  const material = new THREE.PointsMaterial({
+    size: 0.08,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.8,
+    sizeAttenuation: true
+  });
+  
+  true3dParticles = new THREE.Points(geometry, material);
+  true3dScene.add(true3dParticles);
+}
+
+function loadTrue3DCharacter(pageId){
+  if(!true3dScene || !true3dLoaded) return;
+  
+  // Remove existing character
+  if(true3dCharacter){
+    true3dScene.remove(true3dCharacter);
+    true3dCharacter = null;
+  }
+  
+  const config = true3dPageConfig[pageId];
+  if(!config){
+    showToast(currentLang==='zh'?'🎨 這一頁的3D版本正在製作中，敬請期待！':'🎨 3D version coming soon!','info');
+    return;
+  }
+  
+  // Loading manager with timeout
+  const manager = new THREE.LoadingManager();
+  let loadTimeout = null;
+  let loaded = false;
+  
+  manager.onLoad = function(){
+    loaded = true;
+    if(loadTimeout){ clearTimeout(loadTimeout); loadTimeout = null; }
+    console.log('All 3D textures loaded');
+  };
+  
+  manager.onError = function(url){
+    console.warn('Texture load error:', url);
+  };
+  
+  // 10 second timeout - show character even if some textures fail
+  loadTimeout = setTimeout(function(){
+    if(!loaded && true3dCharacter){
+      console.warn('3D texture load timeout - showing partial result');
+      // Character should already be visible with main texture
+    }
+  }, 10000);
+  
+  const textureLoader = new THREE.TextureLoader(manager);
+  
+  // Load main color texture - show character as soon as this loads
+  textureLoader.load(
+    config.color,
+    function(colorTex){
+      colorTex.encoding = THREE.sRGBEncoding;
+      colorTex.minFilter = THREE.LinearFilter;
+      colorTex.magFilter = THREE.LinearFilter;
+      
+      const segments = 128;
+      const geometry = new THREE.PlaneGeometry(2, 2.6, segments, segments);
+      
+      const material = new THREE.MeshStandardMaterial({
+        map: colorTex,
+        color: 0xffffff,
+        roughness: 0.7,
+        metalness: 0.1,
+        side: THREE.DoubleSide,
+        wireframe: true3dWireframe
+      });
+      
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.name = 'frontView';
+      
+      const group = new THREE.Group();
+      group.add(mesh);
+      true3dCharacter = group;
+      true3dScene.add(group);
+      
+      // Load depth map in background
+      if(config.depth){
+        textureLoader.load(
+          config.depth,
+          function(depthTex){
+            depthTex.minFilter = THREE.LinearFilter;
+            depthTex.magFilter = THREE.LinearFilter;
+            material.displacementMap = depthTex;
+            material.displacementScale = 0.5;
+            material.displacementBias = -0.1;
+            material.needsUpdate = true;
+          },
+          undefined,
+          function(err){
+            console.warn('Depth map load failed, continuing without displacement');
+          }
+        );
+      }
+      
+      // Load multi-view planes in background
+      if(config.hasMultiView && config.views){
+        addMultiViewPlanes(config.views, textureLoader);
+      }
+    },
+    undefined, // onProgress
+    function(err){
+      console.error('Main texture load failed:', err);
+      showToast(currentLang==='zh'?'❌ 3D材質加載失敗，請重試':'❌ 3D texture failed to load','error');
+      if(loadTimeout){ clearTimeout(loadTimeout); }
+    }
+  );
+}
+
+function addMultiViewPlanes(views, textureLoader){
+  if(!true3dCharacter) return;
+  
+  const planeGeo = new THREE.PlaneGeometry(2, 2.6, 64, 64);
+  
+  // Right view
+  if(views.right){
+    textureLoader.load(
+      views.right,
+      function(rightTex){
+        rightTex.encoding = THREE.sRGBEncoding;
+        const rightMat = new THREE.MeshStandardMaterial({
+          map: rightTex,
+          roughness: 0.7,
+          metalness: 0.1,
+          side: THREE.DoubleSide,
+          transparent: true,
+          opacity: 0,
+          wireframe: true3dWireframe
+        });
+        const rightMesh = new THREE.Mesh(planeGeo.clone(), rightMat);
+        rightMesh.rotation.y = Math.PI / 2;
+        rightMesh.position.x = 0.1;
+        rightMesh.name = 'rightView';
+        true3dCharacter.add(rightMesh);
+      },
+      undefined,
+      function(){ console.warn('Right view failed to load'); }
+    );
+  }
+  
+  // Left view
+  if(views.left){
+    textureLoader.load(
+      views.left,
+      function(leftTex){
+        leftTex.encoding = THREE.sRGBEncoding;
+        const leftMat = new THREE.MeshStandardMaterial({
+          map: leftTex,
+          roughness: 0.7,
+          metalness: 0.1,
+          side: THREE.DoubleSide,
+          transparent: true,
+          opacity: 0,
+          wireframe: true3dWireframe
+        });
+        const leftMesh = new THREE.Mesh(planeGeo.clone(), leftMat);
+        leftMesh.rotation.y = -Math.PI / 2;
+        leftMesh.position.x = -0.1;
+        leftMesh.name = 'leftView';
+        true3dCharacter.add(leftMesh);
+      },
+      undefined,
+      function(){ console.warn('Left view failed to load'); }
+    );
+  }
+  
+  // Back view
+  if(views.back){
+    textureLoader.load(
+      views.back,
+      function(backTex){
+        backTex.encoding = THREE.sRGBEncoding;
+        const backMat = new THREE.MeshStandardMaterial({
+          map: backTex,
+          roughness: 0.7,
+          metalness: 0.1,
+          side: THREE.DoubleSide,
+          transparent: true,
+          opacity: 0,
+          wireframe: true3dWireframe
+        });
+        const backMesh = new THREE.Mesh(planeGeo.clone(), backMat);
+        backMesh.rotation.y = Math.PI;
+        backMesh.position.z = -0.1;
+        backMesh.name = 'backView';
+        true3dCharacter.add(backMesh);
+      },
+      undefined,
+      function(){ console.warn('Back view failed to load'); }
+    );
+  }
+}
+
+function animateTrue3D(){
+  true3dAnimFrame = requestAnimationFrame(animateTrue3D);
+  
+  if(!true3dScene || !true3dRenderer) return;
+  
+  const delta = true3dClock ? true3dClock.getDelta() : 0.016;
+  const elapsed = true3dClock ? true3dClock.getElapsedTime() : 0;
+  
+  if(true3dControls){
+    try { true3dControls.update(); } catch(e){}
+  }
+  
+  if(true3dParticles){
+    true3dParticles.rotation.y += delta * 0.02;
+    true3dParticles.rotation.x += delta * 0.01;
+  }
+  
+  if(true3dCharacter){
+    true3dCharacter.position.y = Math.sin(elapsed * 1.5) * 0.05;
+    try { updateViewBlending(); } catch(e){}
+  }
+  
+  try {
+    true3dRenderer.render(true3dScene, true3dCamera);
+  } catch(e){
+    console.error('Render error:', e);
+  }
+}
+
+function updateViewBlending(){
+  if(!true3dCharacter || !true3dCamera) return;
+  
+  const cameraDir = new THREE.Vector3();
+  true3dCamera.getWorldPosition(cameraDir);
+  cameraDir.sub(true3dCharacter.position);
+  const angle = Math.atan2(cameraDir.x, cameraDir.z);
+  
+  const frontMesh = true3dCharacter.getObjectByName('frontView');
+  const rightMesh = true3dCharacter.getObjectByName('rightView');
+  const leftMesh = true3dCharacter.getObjectByName('leftView');
+  const backMesh = true3dCharacter.getObjectByName('backView');
+  
+  const frontOpacity = Math.max(0, Math.cos(angle));
+  if(frontMesh && frontMesh.material){
+    frontMesh.material.opacity = Math.max(0.3, frontOpacity);
+    frontMesh.material.transparent = frontOpacity < 0.95;
+  }
+  
+  if(rightMesh && rightMesh.material){
+    const rightAngle = angle - Math.PI / 2;
+    const rightOpacity = Math.max(0, Math.cos(rightAngle)) * 1.2;
+    rightMesh.material.opacity = Math.min(1, Math.max(0, rightOpacity));
+    rightMesh.material.transparent = true;
+  }
+  
+  if(leftMesh && leftMesh.material){
+    const leftAngle = angle + Math.PI / 2;
+    const leftOpacity = Math.max(0, Math.cos(leftAngle)) * 1.2;
+    leftMesh.material.opacity = Math.min(1, Math.max(0, leftOpacity));
+    leftMesh.material.transparent = true;
+  }
+  
+  if(backMesh && backMesh.material){
+    const absAngle = Math.abs(angle);
+    const backAngle = Math.abs(absAngle - Math.PI);
+    const backOpacity = Math.max(0, Math.cos(backAngle)) * 1.5;
+    backMesh.material.opacity = Math.min(1, Math.max(0, backOpacity));
+    backMesh.material.transparent = true;
+  }
+}
+
+function onTrue3DResize(){
+  const container = document.getElementById('true3dCanvas');
+  if(!container || !true3dCamera || !true3dRenderer) return;
+  
+  const w = container.clientWidth || window.innerWidth;
+  const h = container.clientHeight || window.innerHeight;
+  
+  true3dCamera.aspect = w / h;
+  true3dCamera.updateProjectionMatrix();
+  true3dRenderer.setSize(w, h);
+}
+
+function openAI3D(){
+  if(!currentPage) return;
+  stats.gen3d++;
+  saveStats();
+  checkAchievements();
+  
+  const viewer = document.getElementById('ai3dViewer');
+  const titleEl = document.getElementById('ai3dPageTitle');
+  titleEl.textContent = currentLang==='zh'?currentPage.titleZh:currentPage.titleEn;
+  
+  viewer.classList.add('active');
+  
+  // Initialize or refresh
+  if(!true3dLoaded){
+    const ready = initTrue3D();
+    if(ready){
+      loadTrue3DCharacter(currentPage.id);
+    } else {
+      // Wait for Three.js to load
+      const startTime = Date.now();
+      const checkInterval = setInterval(function(){
+        if(true3dLoaded){
+          clearInterval(checkInterval);
+          loadTrue3DCharacter(currentPage.id);
+        } else if(Date.now() - startTime > 15000){
+          clearInterval(checkInterval);
+          showToast(currentLang==='zh'?'❌ 3D引擎加載超時，請重試':'❌ 3D engine load timeout','error');
+        }
+      }, 200);
+    }
+  } else {
+    loadTrue3DCharacter(currentPage.id);
+    setTimeout(onTrue3DResize, 50);
+  }
+  
+  if(true3dControls){
+    true3dControls.autoRotate = true3dAutoRotate;
+  }
+}
+
+function closeAI3D(){
+  document.getElementById('ai3dViewer').classList.remove('active');
+}
+
+function toggleAI3DRotation(){
+  true3dAutoRotate = !true3dAutoRotate;
+  if(true3dControls){
+    true3dControls.autoRotate = true3dAutoRotate;
+  }
+  const btn = document.getElementById('ai3dRotBtn');
+  if(btn){
+    btn.textContent = true3dAutoRotate ? (currentLang==='zh'?'⏸️ 暫停旋轉':'⏸️ Pause') : (currentLang==='zh'?'▶️ 自動旋轉':'▶️ Auto Rotate');
+  }
+}
+
+function resetAI3DCamera(){
+  if(true3dCamera && true3dControls){
+    true3dCamera.position.set(0, 0, 3.5);
+    true3dControls.target.set(0, 0, 0);
+    true3dControls.update();
+  }
+}
+
+function toggleAI3DWireframe(){
+  true3dWireframe = !true3dWireframe;
+  if(true3dCharacter){
+    true3dCharacter.traverse(function(child){
+      if(child.isMesh && child.material){
+        if(Array.isArray(child.material)){
+          child.material.forEach(function(m){ m.wireframe = true3dWireframe; });
+        } else {
+          child.material.wireframe = true3dWireframe;
+        }
+      }
+    });
+  }
+  const btn = document.getElementById('ai3dWireBtn');
+  if(btn){
+    btn.textContent = true3dWireframe ? (currentLang==='zh'?'🎨 實體模式':'🎨 Solid') : (currentLang==='zh'?'🔲 線框模式':'🔲 Wireframe');
+  }
+}
+
+function downloadAI3D(){
+  if(!true3dRenderer){
+    showToast(currentLang==='zh'?'❌ 3D場景尚未就緒':'❌ 3D scene not ready','error');
+    return;
+  }
+  
+  try {
+    true3dRenderer.render(true3dScene, true3dCamera);
+    const dataURL = true3dRenderer.domElement.toDataURL('image/png');
+    
+    const link = document.createElement('a');
+    link.href = dataURL;
+    link.download = (currentPage ? currentPage.titleZh : '3d_artwork') + '_true3d.png';
+    link.click();
+    
+    showToast(currentLang==='zh'?'✅ 截圖已下載':'✅ Screenshot downloaded','success');
+  } catch(e){
+    showToast(currentLang==='zh'?'❌ 截圖失敗':'❌ Screenshot failed','error');
+  }
+}
+
+function cameraClose(){
+  if(threeCamera){
+    threeCamera.position.z = 4;
+  }
+}
+
+function cameraWide(){
+  if(threeCamera){
+    threeCamera.position.z = 10;
+  }
+}
+
+// ============ Global Error Handler ============
+window.onerror = function(msg, url, line, col, error){
+  console.error('JS Error:', msg, 'at line', line);
+  // 确保页面至少能显示出来
+  var gallery = document.getElementById('gallerySection');
+  if(gallery){ gallery.style.display = 'block'; }
+  var nav = document.querySelector('.nav-tabs');
+  if(nav){ nav.style.display = 'flex'; }
+  return false;
+};
+
+// ============ Safe Init with Fallback ============
+function safeInit(){
+  try {
+    init();
+  } catch(e) {
+    console.error('init() failed:', e);
+    // 降级：至少显示图库
+    try {
+      var gallery = document.getElementById('gallerySection');
+      if(gallery){ gallery.style.display = 'block'; }
+      var nav = document.querySelector('.nav-tabs');
+      if(nav){ nav.style.display = 'flex'; }
+      renderGallery('all');
+    } catch(e2) {
+      console.error('Fallback also failed:', e2);
+    }
+  }
+  
+  // 绑定画布事件
+  try {
+    var canvas = document.getElementById('coloringCanvas');
+    if(canvas){
+      canvas.addEventListener('mousedown',startDraw);
+      canvas.addEventListener('mousemove',draw);
+      canvas.addEventListener('mouseup',endDraw);
+      canvas.addEventListener('mouseleave',endDraw);
+      canvas.addEventListener('touchstart',startDraw,{passive:false});
+      canvas.addEventListener('touchmove',draw,{passive:false});
+      canvas.addEventListener('touchend',endDraw);
+    }
+  } catch(e) {
+    console.error('Canvas event binding failed:', e);
+  }
+}
+
+// ============ Event Listeners ============
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', safeInit);
+} else {
+  safeInit();
+}
+
+// 备用：如果DOMContentLoaded 2秒后还没初始化，强制执行
+setTimeout(function(){
+  var gallery = document.getElementById('galleryGrid');
+  if(gallery && gallery.children.length === 0){
+    console.log('Timeout fallback: forcing init');
+    safeInit();
+  }
+}, 2000);
+
+// file:// 协议提示
+setTimeout(function(){
+  if(window.location.protocol === 'file:'){
+    try {
+      showToast(currentLang==='zh'?'⚠️ 提示：本地打開時，作品保存功能可能受限':'⚠️ Note: Save may not work when opened locally','info');
+    } catch(e){}
+  }
+},1500);
+
+// Handle window resize for canvas
+window.addEventListener('resize',function(){
+  if(currentPage && document.getElementById('coloringSection').classList.contains('active')){
+    const lineartCanvas = document.getElementById('lineartCanvas');
+    const coloringCanvas = document.getElementById('coloringCanvas');
+    const container = document.getElementById('canvasContainer');
+    
+    // Recalculate display size - internal pixel resolution stays the same
+    const naturalW = coloringCanvas.width;
+    const naturalH = coloringCanvas.height;
+    if(!naturalW || !naturalH) return;
+    
+    const wrapper = document.querySelector('.canvas-wrapper');
+    const maxW = wrapper.clientWidth - 40;
+    const maxH = window.innerHeight * 0.75;
+    
+    let displayW = naturalW;
+    let displayH = naturalH;
+    const ratio = naturalW / naturalH;
+    
+    if(displayW > maxW){
+      displayW = maxW;
+      displayH = displayW / ratio;
+    }
+    if(displayH > maxH){
+      displayH = maxH;
+      displayW = displayH * ratio;
+    }
+    
+    displayW = Math.round(displayW);
+    displayH = Math.round(displayH);
+    
+    container.style.width = displayW + 'px';
+    container.style.height = displayH + 'px';
+    
+    // Both canvases use 100% CSS size, so they auto-resize with container
+    // Internal pixel resolution and lineartData stay the same - no redraw needed
+  }
+});
+</script>
+</body>
+</html>
